@@ -15,13 +15,17 @@ services:
       - DB_POSTGRESDB_SCHEMA=${DB_POSTGRESDB_SCHEMA}
       - DB_POSTGRESDB_USER=${DB_POSTGRESDB_USER}
       - DB_POSTGRESDB_PASSWORD=${DB_POSTGRESDB_PASSWORD}
+      - N8N_HOST=${N8N_HOST}
       - N8N_PROTOCOL=${N8N_PROTOCOL}
-      - WEBHOOK_URL=${WEBHOOK_URL}
+      - N8N_WEBHOOK_URL=${N8N_WEBHOOK_URL}
       - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
+      - N8N_RESTRICT_FILE_ACCESS_TO=/swagger-html  # Note - This is needed to write files in N8N 2.X
+
   
     volumes:
       - n8n-data:/home/node/.n8n
       - ./certificates:/opt/custom-certificates
+      - ./swagger-html:/swagger-html:rw 
 
       
 

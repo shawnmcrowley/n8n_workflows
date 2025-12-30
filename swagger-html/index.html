@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Swagger UI from YAML Text</title>
+  <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css">
+</head>
+<body>
+  <div id="swagger-ui"></div>
+
+  <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
+  <script src="https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+  <script>
+    // Embed the YAML as a JS string (properly escaped)
+    const yamlText = "\nswagger: \"2.0\"\ninfo:\n  title: N8N Instance API\n  description: API description in Markdown.\n  version: 1.0.0\n  \nhost: localhost:5678\n\nbasePath: /webhook\nschemes:\n  - http\n  - https\npaths:\n\n  /swagger:\n    get :\n      summary: Get Swagger.\n      description: Related to workflow [2bdSzAcC5vRH1wsq].\n      tags:\n        - Generate Swagger Specs for Workflows That Have WebHooks and Create HTML File On Disk\n      \n      produces:\n        - text/plain\n      responses:\n        200:\n          description: OK\n  /get_documents:\n    get :\n      summary: Webhook.\n      description: Related to workflow [GqiYARXO6B0TTADZ].\n      tags:\n        - Postgres_API_WorkFlow_with_Email\n      \n      produces:\n        - application/json\n      responses:\n        200:\n          description: OK";
+
+    const spec = jsyaml.load(yamlText);
+    const ui = SwaggerUIBundle({
+      spec,
+      dom_id: "#swagger-ui"
+    });
+  </script>
+</body>
+</html>
