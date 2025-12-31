@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-31T23:25:41.011Z",
+  "updatedAt": "2025-12-31T23:34:00.190Z",
   "createdAt": "2025-12-15T19:30:07.129Z",
   "id": "ZadnteZADpdVNgqu",
   "name": "Automated Daily Workflow Backup To GitHub",
@@ -18,7 +18,7 @@
       "name": "Schedule Trigger",
       "type": "n8n-nodes-base.scheduleTrigger",
       "position": [
-        288,
+        224,
         240
       ],
       "typeVersion": 1.2
@@ -32,7 +32,7 @@
       "name": "Retrieve workflows",
       "type": "n8n-nodes-base.n8n",
       "position": [
-        768,
+        704,
         240
       ],
       "typeVersion": 1,
@@ -58,7 +58,7 @@
       "name": "Aggregate",
       "type": "n8n-nodes-base.aggregate",
       "position": [
-        608,
+        544,
         240
       ],
       "typeVersion": 1
@@ -85,7 +85,7 @@
       "name": "List files from repo",
       "type": "n8n-nodes-base.github",
       "position": [
-        448,
+        384,
         240
       ],
       "webhookId": "354d699e-44b0-4444-9d31-af7fd4ff5561",
@@ -122,7 +122,7 @@
       "name": "Update file",
       "type": "n8n-nodes-base.github",
       "position": [
-        1568,
+        1504,
         160
       ],
       "webhookId": "27218087-8df7-474d-a39f-70cfa9c34ec8",
@@ -157,7 +157,7 @@
       "name": "Upload file",
       "type": "n8n-nodes-base.github",
       "position": [
-        1568,
+        1504,
         320
       ],
       "webhookId": "ce4b561b-acb9-4cd8-b76f-4928dada9674",
@@ -185,7 +185,7 @@
       "name": "Check if file exists",
       "type": "n8n-nodes-base.if",
       "position": [
-        1408,
+        1344,
         240
       ],
       "typeVersion": 1
@@ -202,7 +202,7 @@
       "name": "Json file",
       "type": "n8n-nodes-base.convertToFile",
       "position": [
-        928,
+        864,
         240
       ],
       "typeVersion": 1.1
@@ -216,7 +216,7 @@
       "name": "To base64",
       "type": "n8n-nodes-base.extractFromFile",
       "position": [
-        1088,
+        1024,
         240
       ],
       "typeVersion": 1
@@ -232,7 +232,7 @@
       "name": "Sticky Note1",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        432,
+        368,
         112
       ],
       "typeVersion": 1
@@ -261,7 +261,7 @@
       "name": "Commit date & file name",
       "type": "n8n-nodes-base.set",
       "position": [
-        1248,
+        1184,
         240
       ],
       "typeVersion": 3.4
@@ -277,7 +277,7 @@
       "name": "Sticky Note2",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        752,
+        688,
         112
       ],
       "typeVersion": 1
@@ -293,7 +293,7 @@
       "name": "Sticky Note3",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1232,
+        1168,
         112
       ],
       "typeVersion": 1
@@ -415,7 +415,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "4476a1ff-affe-4848-b50e-4db8309d8d0c",
+  "versionId": "27844589-969d-4efc-85a8-49ba322b5fb4",
   "activeVersionId": null,
   "triggerCount": 0,
   "shared": [
