@@ -40,7 +40,7 @@ services:
     volumes:
       - pgvector-data:/var/lib/postgresql/data
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:latest
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
