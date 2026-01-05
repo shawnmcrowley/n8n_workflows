@@ -1,0 +1,208 @@
+{
+  "updatedAt": "2026-01-05T20:51:03.051Z",
+  "createdAt": "2026-01-05T16:48:42.033Z",
+  "id": "en1yjlfUgbRjab5c",
+  "name": "HTML Newsletter with Real Time Data",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        -32
+      ],
+      "id": "819882ee-38a0-44ef-91cb-1e75946ca5a6",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c128b134-908f-4a7e-86d9-28bafd9dade5",
+              "name": "urls",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -480,
+        -32
+      ],
+      "id": "3e56296b-d503-4517-84f9-0c274cda39ac",
+      "name": "Extract URLs"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "urls"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        -32
+      ],
+      "id": "e5574856-76c7-41d7-a9f2-b275c29f30dc",
+      "name": "Aggregate Into One Object of URLs"
+    },
+    {
+      "parameters": {
+        "url": "https://javascript.plainenglish.io/feed",
+        "options": {
+          "customFields": "="
+        }
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -704,
+        -32
+      ],
+      "id": "2b07c2b4-681e-44e4-b130-26b3cd35e464",
+      "name": "RSS From Javascript in Plain English"
+    },
+    {
+      "parameters": {
+        "operation": "batchScrapeStatus",
+        "batchId": "={{ $json.id }}",
+        "requestOptions": {}
+      },
+      "type": "@mendable/n8n-nodes-firecrawl.firecrawl",
+      "typeVersion": 1,
+      "position": [
+        176,
+        -32
+      ],
+      "id": "e618f401-8617-42db-b45a-a8cdb0e28892",
+      "name": "Get batch scrape status",
+      "credentials": {
+        "firecrawlApi": {
+          "id": "TeMbi0WvP7niZdTt",
+          "name": "Firecrawl account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v2/batch/scrape",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer fc-c1c7b3a43ebf48e1b53d8340a625e1b5"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"urls\": {{ JSON.stringify($json.urls) }},\n  \"formats\": [\n    \"markdown\"\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -48,
+        -32
+      ],
+      "id": "49d918f8-e87a-40a4-8908-824219f6b92f",
+      "name": "HTTP Request"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "RSS From Javascript in Plain English",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract URLs": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Into One Object of URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Into One Object of URLs": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS From Javascript in Plain English": {
+      "main": [
+        [
+          {
+            "node": "Extract URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Get batch scrape status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "56dc32b2-4ee8-4ef3-b1d0-ee975e184f59",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-01-05T16:48:42.033Z",
+      "createdAt": "2026-01-05T16:48:42.033Z",
+      "role": "workflow:owner",
+      "workflowId": "en1yjlfUgbRjab5c",
+      "projectId": "aRJv9cLftn98cx8V"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
