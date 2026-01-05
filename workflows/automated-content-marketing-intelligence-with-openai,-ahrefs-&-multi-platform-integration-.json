@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-15T19:38:41.164Z",
+  "updatedAt": "2026-01-05T16:24:21.416Z",
   "createdAt": "2025-12-15T19:38:41.164Z",
   "id": "xCkuZByfUeGvgTbE",
   "name": "Automated Content Marketing Intelligence with OpenAI, Ahrefs & Multi-platform Integration",
@@ -431,8 +431,8 @@
       "name": "📖 Setup Instructions",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        368,
-        240
+        608,
+        256
       ],
       "typeVersion": 1
     },
@@ -801,7 +801,7 @@
     "templateId": "5979"
   },
   "pinData": {},
-  "versionId": "927b3a03-f312-4c82-b254-306afc7f5c70",
+  "versionId": "38df50ff-1bd6-420d-b7e3-7850b872766e",
   "activeVersionId": null,
   "triggerCount": 0,
   "shared": [
