@@ -1,0 +1,94 @@
+{
+  "updatedAt": "2025-12-31T22:52:16.082Z",
+  "createdAt": "2025-12-31T21:59:32.303Z",
+  "id": "muXPMz9FAT3fMK6g",
+  "name": "Error Worflow",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0b452c1f-8401-48be-aed6-4314021bd4a1",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "resource": "channelMessage",
+        "teamId": {
+          "__rl": true,
+          "value": "c21f3bd3-a3b8-4459-97ce-6dc2c255488a",
+          "mode": "list",
+          "cachedResultName": "WorkFlow Notifications"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "19:_QmvseAzn-6kOzqfvaOJQdNjEgK9fp8X0idJYTLlkwI1@thread.tacv2",
+          "mode": "list",
+          "cachedResultName": "Actions and Errors",
+          "cachedResultUrl": "https://teams.cloud.microsoft/l/channel/19%3A_QmvseAzn-6kOzqfvaOJQdNjEgK9fp8X0idJYTLlkwI1%40thread.tacv2/WorkFlow%20Notifications?groupId=c21f3bd3-a3b8-4459-97ce-6dc2c255488a&tenantId=02039216-1f40-4e50-9a19-964122f69012&allowXTenantAccess=True&ngc=True"
+        },
+        "message": "=Actions and Errors Workflow: {{ $json.execution.url }} {{ $json.execution.error.message }}",
+        "options": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.microsoftTeams",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "fd97575c-70d5-48b5-9364-ae3400aba1b9",
+      "name": "Create Team Message in WorkFlow Notifications, Actions and Errors Channel",
+      "webhookId": "5c759a01-f329-43ba-b858-580280c8ab33",
+      "credentials": {
+        "microsoftTeamsOAuth2Api": {
+          "id": "ppTFdCJPrelZRsfP",
+          "name": "Microsoft Teams account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Create Team Message in WorkFlow Notifications, Actions and Errors Channel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "028e8ddb-2bd7-4c7f-9c23-ec540d02c85c",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-12-31T21:59:32.303Z",
+      "createdAt": "2025-12-31T21:59:32.303Z",
+      "role": "workflow:owner",
+      "workflowId": "muXPMz9FAT3fMK6g",
+      "projectId": "aRJv9cLftn98cx8V"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
