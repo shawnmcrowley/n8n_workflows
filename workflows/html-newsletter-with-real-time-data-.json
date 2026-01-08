@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-05T20:51:03.051Z",
+  "updatedAt": "2026-01-08T20:19:39.675Z",
   "createdAt": "2026-01-05T16:48:42.033Z",
   "id": "en1yjlfUgbRjab5c",
   "name": "HTML Newsletter with Real Time Data",
@@ -11,8 +11,8 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -928,
-        -32
+        -1568,
+        -480
       ],
       "id": "819882ee-38a0-44ef-91cb-1e75946ca5a6",
       "name": "When clicking ‘Execute workflow’"
@@ -34,8 +34,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -480,
-        -32
+        -1120,
+        -480
       ],
       "id": "3e56296b-d503-4517-84f9-0c274cda39ac",
       "name": "Extract URLs"
@@ -54,8 +54,8 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        -272,
-        -32
+        -896,
+        -480
       ],
       "id": "e5574856-76c7-41d7-a9f2-b275c29f30dc",
       "name": "Aggregate Into One Object of URLs"
@@ -70,8 +70,8 @@
       "type": "n8n-nodes-base.rssFeedRead",
       "typeVersion": 1.2,
       "position": [
-        -704,
-        -32
+        -1344,
+        -480
       ],
       "id": "2b07c2b4-681e-44e4-b130-26b3cd35e464",
       "name": "RSS From Javascript in Plain English"
@@ -85,8 +85,8 @@
       "type": "@mendable/n8n-nodes-firecrawl.firecrawl",
       "typeVersion": 1,
       "position": [
-        176,
-        -32
+        -208,
+        -272
       ],
       "id": "e618f401-8617-42db-b45a-a8cdb0e28892",
       "name": "Get batch scrape status",
@@ -118,11 +118,82 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -48,
-        -32
+        -672,
+        -480
       ],
       "id": "49d918f8-e87a-40a4-8908-824219f6b92f",
       "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "batchSize": 20,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -448,
+        -384
+      ],
+      "id": "8543ff11-8143-4371-b6f7-e4a044b20f05",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Check Batch ID",
+      "typeVersion": 1,
+      "position": [
+        336,
+        -128
+      ],
+      "id": "3a8ed90b-90ed-4400-a6b5-a35bbe0c1578"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "99f0c858-c768-4d31-a378-730f7adf6a64",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "completed",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -32,
+        -384
+      ],
+      "id": "f5c1bc53-5129-43ca-bf8c-456238b61b58",
+      "name": "Check If Batch Completed"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        128,
+        -128
+      ],
+      "id": "c6effe62-3cc6-4cab-b668-da0bfbaee1eb",
+      "name": "Wait",
+      "webhookId": "ea081d7b-7799-4ce7-a7e0-e85b11afcfed"
     }
   ],
   "connections": {
@@ -174,7 +245,64 @@
       "main": [
         [
           {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
             "node": "Get batch scrape status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get batch scrape status": {
+      "main": [
+        [
+          {
+            "node": "Check If Batch Completed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Batch ID": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If Batch Completed": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Check Batch ID",
             "type": "main",
             "index": 0
           }
@@ -191,7 +319,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "56dc32b2-4ee8-4ef3-b1d0-ee975e184f59",
+  "versionId": "0ce84548-9620-4f11-aa35-7699095c7355",
   "activeVersionId": null,
   "triggerCount": 0,
   "shared": [
