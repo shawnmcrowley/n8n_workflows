@@ -1,0 +1,496 @@
+{
+  "updatedAt": "2026-01-08T19:43:58.285Z",
+  "createdAt": "2026-01-06T17:41:12.377Z",
+  "id": "OYOxBB3KceUiurLMhOOom",
+  "name": "Content_Aggregation",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1056,
+        -624
+      ],
+      "id": "6f2b358d-5b3e-415a-be72-1f517d30dd3a",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1QOn-nKBEZHM9h9YWpC7bZABsBN5D29uqICuGK5APCe4",
+          "mode": "list",
+          "cachedResultName": "Sample_Workflow_Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QOn-nKBEZHM9h9YWpC7bZABsBN5D29uqICuGK5APCe4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1258615245,
+          "mode": "list",
+          "cachedResultName": "Content_Tracking",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QOn-nKBEZHM9h9YWpC7bZABsBN5D29uqICuGK5APCe4/edit#gid=1258615245"
+        },
+        "options": {
+          "outputFormatting": {
+            "values": {
+              "general": "UNFORMATTED_VALUE",
+              "date": "FORMATTED_STRING"
+            }
+          },
+          "returnFirstMatch": false
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -832,
+        -624
+      ],
+      "id": "1c8646ed-fdfe-4f8a-b0e4-cb51f579dfc8",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ZU6vdyy5jG2m2v3I",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a social media content expert. Create engaging posts for the following platforms based on this topic: {{ $json[\"Content Idea\"] }}\n\nCreate:\n1. A Content Item (max 1000 characters, busy specific topis, highlight in bold particular trends like \"jeans, socks, garments, sustainability, health care goods like diapers or gowns\")\n2. A List of Competitors (max 5) in the Industry by Name\n3. A Twitter/X post (max 280 characters, punchy, include 2-3 relevant hashtags)\n4. A LinkedIn post (professional tone, 150-300 words, storytelling format, end with a question)\n\nReturn as JSON with keys: content, competitors,twitter, linkedin",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -608,
+        -624
+      ],
+      "id": "29184ac8-b0ff-492e-8e78-12387f857636",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "gpt-oss:120b-cloud",
+        "options": {
+          "temperature": 0.7,
+          "format": "json"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        -400
+      ],
+      "id": "c100a5f8-8a49-494e-ba2e-fc4bb7062e81",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "Vob7VZOr0cQCHgsU",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the input data\nconst inputItems = $input.all();\n\n// Map through items and extract the structured data\nreturn inputItems.map(item => {\n    const inputJson = item.json;\n    const outputText = inputJson.output || inputJson.content || JSON.stringify(inputJson);\n    \n    let parsed = null;\n    let error = null;\n    \n    // Try to extract and parse the JSON from markdown code blocks\n    const jsonBlockMatch = outputText.match(/```json\\s*([\\s\\S]*?)\\s*```/);\n    \n    if (jsonBlockMatch) {\n        try {\n            parsed = JSON.parse(jsonBlockMatch[1]);\n        } catch (e) {\n            error = \"Failed to parse JSON block: \" + e.message;\n        }\n    }\n    \n    // If no markdown block or parsing failed, try parsing the whole text\n    if (!parsed) {\n        try {\n            parsed = JSON.parse(outputText);\n        } catch (e) {\n            error = \"Failed to parse JSON: \" + e.message;\n        }\n    }\n    \n    // If we successfully parsed, return the structured data\n    if (parsed) {\n        return {\n            json: {\n                content: parsed.content || \"\",\n                competitors: parsed.competitors || [],\n                twitter: parsed.twitter || \"\",\n                linkedin: parsed.linkedin || \"\"\n            }\n        };\n    }\n    \n    // If all parsing failed, return original with error\n    return {\n        json: {\n            content: outputText,\n            competitors: [],\n            twitter: \"\",\n            linkedin: \"\",\n            _parseError: error\n        }\n    };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -272,
+        -624
+      ],
+      "id": "c9bd6152-504e-4769-b8ed-fe7f575ba11c",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "url": "https://api.search.brave.com/res/v1/web/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "={{ $json.competitors }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip"
+            },
+            {
+              "name": "X-Subscription-Token",
+              "value": "BSA9Cn5VT3G5urel2HP6bWEYDiXBt3T"
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 10000
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        176,
+        -624
+      ],
+      "id": "08ee9be5-1ed0-42a4-996c-a25bd9388731",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "competitors",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        -624
+      ],
+      "id": "24a11759-fa9f-4e21-aaf0-25c347dcc0cf",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "05b7f904-b00e-42b2-92ae-11d4e9ca8448",
+              "name": "query.original",
+              "value": "={{ $json.query.original }}",
+              "type": "string"
+            },
+            {
+              "id": "ebe19515-ec30-4ebd-ad0c-e45af9859406",
+              "name": "videos",
+              "value": "={{ $json.videos }}",
+              "type": "object"
+            },
+            {
+              "id": "00e93f57-2d75-4027-ba97-81f0b1472318",
+              "name": "web.results",
+              "value": "={{ $json.web.results }}",
+              "type": "array"
+            },
+            {
+              "id": "71341052-718e-4427-a818-77e7bcf3b68a",
+              "name": "news",
+              "value": "={{ $json.news }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        -624
+      ],
+      "id": "fe53ec8b-42a7-4ed7-9e7a-4c71d38a523c",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "channelMessage",
+        "teamId": {
+          "__rl": true,
+          "value": "c21f3bd3-a3b8-4459-97ce-6dc2c255488a",
+          "mode": "list",
+          "cachedResultName": "WorkFlow Notifications"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "19:_QmvseAzn-6kOzqfvaOJQdNjEgK9fp8X0idJYTLlkwI1@thread.tacv2",
+          "mode": "list",
+          "cachedResultName": "Actions and Errors",
+          "cachedResultUrl": "https://teams.cloud.microsoft/l/channel/19%3A_QmvseAzn-6kOzqfvaOJQdNjEgK9fp8X0idJYTLlkwI1%40thread.tacv2/WorkFlow%20Notifications?groupId=c21f3bd3-a3b8-4459-97ce-6dc2c255488a&tenantId=02039216-1f40-4e50-9a19-964122f69012&allowXTenantAccess=True&ngc=True"
+        },
+        "contentType": "html",
+        "message": "=<h2>Today's Content:</h2>  {{ $json.content }}  <p>\n<h3>Competitors:</h3> {{ $json.competitors }}  <p>\n<h3>Twitter Post:</h3> {{ $json.twitter }} <p>\n<h3>Linkedin In Content: </h3> {{ $json.linkedin }}",
+        "options": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.microsoftTeams",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        -416
+      ],
+      "id": "4258bbf0-a839-4e1c-a2d2-76f8a0fb2e79",
+      "name": "Create message",
+      "webhookId": "e1ff1254-c010-4e2c-84ea-394e13334fc7",
+      "credentials": {
+        "microsoftTeamsOAuth2Api": {
+          "id": "ppTFdCJPrelZRsfP",
+          "name": "Microsoft Teams account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QOn-nKBEZHM9h9YWpC7bZABsBN5D29uqICuGK5APCe4",
+          "mode": "list",
+          "cachedResultName": "Sample_Workflow_Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QOn-nKBEZHM9h9YWpC7bZABsBN5D29uqICuGK5APCe4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1483183019,
+          "mode": "list",
+          "cachedResultName": "competitive_analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QOn-nKBEZHM9h9YWpC7bZABsBN5D29uqICuGK5APCe4/edit#gid=1483183019"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "videos",
+              "displayName": "videos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "web",
+              "displayName": "web",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "news",
+              "displayName": "news",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        608,
+        -624
+      ],
+      "id": "6379e937-2ba7-4e5d-9e65-3938c4d5df70",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ZU6vdyy5jG2m2v3I",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Create message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create message": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Get row(s) in sheet": [
+      {
+        "json": {
+          "row_number": 2,
+          "Date": "01/16/2026",
+          "Content Idea": "Recent Trends in the Fashion Industry",
+          "Twitter Post": "",
+          "Linkedin Post": "",
+          "Image URL": "",
+          "Status": "",
+          "Notes": ""
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Code in JavaScript": [
+      {
+        "json": {
+          "content": "The fashion runway this season is a kaleidoscope of **sustainability** and tech. Designers are reimagining **jeans** with recycled fibers, turning everyday **socks** into compostable statements. Classic **garments** are now embedded with smart sensors that monitor body temperature, while **health care goods** such as **diapers** and **gowns** are being crafted from biodegradable, antimicrobial fabrics. This shift reflects a consumer base that demands eco‑friendly choices without sacrificing style. Brands that blend cutting‑edge material science with timeless silhouettes are poised to dominate the market. From streetwear to hospital corridors, the line between fashion and function blurs, heralding a new era where every stitch tells a story of responsibility.",
+          "competitors": [
+            "Zara",
+            "H&M",
+            "Uniqlo",
+            "Patagonia",
+            "Lululemon"
+          ],
+          "twitter": "Fashion’s future is here: recycled **jeans**, biodegradable **socks**, and high‑tech **gowns** on the runway. 🌿✨ #SustainableStyle #FashionTech #EcoChic",
+          "linkedin": "When I walked into a small boutique in Copenhagen last winter, I expected the usual seasonal coats and accessories. Instead, I was greeted by a display of ultra‑light **jeans** woven from reclaimed denim, **socks** that dissolve after a single wash, and even sleek **gowns** designed for both runway glamour and hospital hygiene. The designer explained that the collection was born out of a single question: *How can we make every piece of clothing as responsible as it is stylish?* \n\nThe answer was a blend of material innovation and a renewed focus on **sustainability**. By partnering with biotech firms, they introduced fabrics that break down naturally, while still meeting the performance standards of high‑end **garments**. Even **health care goods** like **diapers** are now being produced with the same eco‑conscious mindset, reducing landfill waste and improving comfort for patients. \n\nThis narrative isn’t just a niche story—it’s a signal that the entire fashion ecosystem is pivoting toward a greener, smarter future. Companies that can weave responsibility into their brand DNA will not only win consumer trust but also set the benchmark for the next decade of style. \n\nWhat steps is your organization taking to integrate sustainable innovation into its product line?"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "5d3a3e39-f82d-4351-b6fd-2babc65dd127",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-01-06T17:41:12.377Z",
+      "createdAt": "2026-01-06T17:41:12.377Z",
+      "role": "workflow:owner",
+      "workflowId": "OYOxBB3KceUiurLMhOOom",
+      "projectId": "aRJv9cLftn98cx8V"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
