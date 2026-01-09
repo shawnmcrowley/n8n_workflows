@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-08T19:43:58.285Z",
+  "updatedAt": "2026-01-09T21:54:47.631Z",
   "createdAt": "2026-01-06T17:41:12.377Z",
   "id": "OYOxBB3KceUiurLMhOOom",
   "name": "Content_Aggregation",
@@ -441,44 +441,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {
-    "Get row(s) in sheet": [
-      {
-        "json": {
-          "row_number": 2,
-          "Date": "01/16/2026",
-          "Content Idea": "Recent Trends in the Fashion Industry",
-          "Twitter Post": "",
-          "Linkedin Post": "",
-          "Image URL": "",
-          "Status": "",
-          "Notes": ""
-        },
-        "pairedItem": {
-          "item": 0
-        }
-      }
-    ],
-    "Code in JavaScript": [
-      {
-        "json": {
-          "content": "The fashion runway this season is a kaleidoscope of **sustainability** and tech. Designers are reimagining **jeans** with recycled fibers, turning everyday **socks** into compostable statements. Classic **garments** are now embedded with smart sensors that monitor body temperature, while **health care goods** such as **diapers** and **gowns** are being crafted from biodegradable, antimicrobial fabrics. This shift reflects a consumer base that demands eco‑friendly choices without sacrificing style. Brands that blend cutting‑edge material science with timeless silhouettes are poised to dominate the market. From streetwear to hospital corridors, the line between fashion and function blurs, heralding a new era where every stitch tells a story of responsibility.",
-          "competitors": [
-            "Zara",
-            "H&M",
-            "Uniqlo",
-            "Patagonia",
-            "Lululemon"
-          ],
-          "twitter": "Fashion’s future is here: recycled **jeans**, biodegradable **socks**, and high‑tech **gowns** on the runway. 🌿✨ #SustainableStyle #FashionTech #EcoChic",
-          "linkedin": "When I walked into a small boutique in Copenhagen last winter, I expected the usual seasonal coats and accessories. Instead, I was greeted by a display of ultra‑light **jeans** woven from reclaimed denim, **socks** that dissolve after a single wash, and even sleek **gowns** designed for both runway glamour and hospital hygiene. The designer explained that the collection was born out of a single question: *How can we make every piece of clothing as responsible as it is stylish?* \n\nThe answer was a blend of material innovation and a renewed focus on **sustainability**. By partnering with biotech firms, they introduced fabrics that break down naturally, while still meeting the performance standards of high‑end **garments**. Even **health care goods** like **diapers** are now being produced with the same eco‑conscious mindset, reducing landfill waste and improving comfort for patients. \n\nThis narrative isn’t just a niche story—it’s a signal that the entire fashion ecosystem is pivoting toward a greener, smarter future. Companies that can weave responsibility into their brand DNA will not only win consumer trust but also set the benchmark for the next decade of style. \n\nWhat steps is your organization taking to integrate sustainable innovation into its product line?"
-        },
-        "pairedItem": {
-          "item": 0
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "versionId": "5d3a3e39-f82d-4351-b6fd-2babc65dd127",
   "activeVersionId": null,
   "triggerCount": 0,
