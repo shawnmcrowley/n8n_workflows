@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-09T22:26:59.983Z",
+  "updatedAt": "2026-01-10T22:19:23.928Z",
   "createdAt": "2026-01-08T14:32:39.044Z",
   "id": "K0JZPGQRe-jTTVFEwunI4",
   "name": "AI Stock Analysis Automation (EODHD + Google Sheets + AI)",
@@ -12,41 +12,10 @@
       "typeVersion": 1,
       "position": [
         1856,
-        628
+        640
       ],
       "id": "9f365c7e-a53a-4b5a-af3f-9ec775c339c3",
       "name": "When clicking ‘Execute workflow’"
-    },
-    {
-      "parameters": {
-        "url": "=https://eodhd.com/api/fundamentals/{{ $json.ticker }}.US",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "filter",
-              "value": "General,Highlights,Valuation,Technicals"
-            },
-            {
-              "name": "api_token",
-              "value": "6925d988009038.86160182"
-            },
-            {
-              "name": "fmt",
-              "value": "json"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.3,
-      "position": [
-        2528,
-        504
-      ],
-      "id": "02a5ebc5-def5-4696-b44a-239ea00c0703",
-      "name": "HTTP Request"
     },
     {
       "parameters": {
@@ -70,7 +39,7 @@
       "typeVersion": 4.7,
       "position": [
         2080,
-        628
+        640
       ],
       "id": "009f5473-b3b9-4ade-b7fe-4540f5c1b5ba",
       "name": "Get row(s) in sheet",
@@ -89,7 +58,7 @@
       "typeVersion": 3,
       "position": [
         2304,
-        628
+        640
       ],
       "id": "ee6ec3b8-787f-4711-85c4-2f9eb0e4a6d6",
       "name": "Loop Over Items"
@@ -118,7 +87,7 @@
             },
             {
               "name": "api_token",
-              "value": "6925d988009038.86160182"
+              "value": " 6962c4de96b756.96575586"
             }
           ]
         },
@@ -140,7 +109,7 @@
       "typeVersion": 3.2,
       "position": [
         3200,
-        504
+        512
       ],
       "id": "070089f4-d0bb-4b2c-8540-8b35290be290",
       "name": "Merge"
@@ -153,7 +122,7 @@
       "typeVersion": 2,
       "position": [
         3424,
-        504
+        512
       ],
       "id": "f575df81-4490-4399-ac04-91e820d78084",
       "name": "Code in JavaScript"
@@ -183,7 +152,7 @@
       "typeVersion": 3,
       "position": [
         3648,
-        504
+        512
       ],
       "id": "535f3c8b-9e69-48f6-8f20-51302e9397b7",
       "name": "AI Agent"
@@ -202,8 +171,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        3720,
-        728
+        3520,
+        960
       ],
       "id": "72b8a79f-1e40-4d7e-8592-c9259a8f40cc",
       "name": "OpenAI Chat Model",
@@ -222,7 +191,7 @@
       "typeVersion": 2,
       "position": [
         4000,
-        504
+        512
       ],
       "id": "a8099015-ca1b-4e31-8ed6-6081c61dfb48",
       "name": "Code in JavaScript2"
@@ -235,7 +204,7 @@
       "typeVersion": 2,
       "position": [
         4224,
-        504
+        512
       ],
       "id": "014b9434-1a43-42fb-8c80-fed29c4b91e6",
       "name": "Code in JavaScript3"
@@ -245,17 +214,17 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1k6mDOKB0B6Wt2OOvaAo7oTxpn7Zt-XeiLA0NZlM6VFY",
+          "value": "1ksZvZR0cuQHYJ0-W0FUZUNm3rwdudlZxckLIUcgY_r8",
           "mode": "list",
-          "cachedResultName": "stocks",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1k6mDOKB0B6Wt2OOvaAo7oTxpn7Zt-XeiLA0NZlM6VFY/edit?usp=drivesdk"
+          "cachedResultName": "Portfolio_Performance",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ksZvZR0cuQHYJ0-W0FUZUNm3rwdudlZxckLIUcgY_r8/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
-          "value": 2073916885,
+          "value": 231712198,
           "mode": "list",
-          "cachedResultName": "output",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1k6mDOKB0B6Wt2OOvaAo7oTxpn7Zt-XeiLA0NZlM6VFY/edit#gid=2073916885"
+          "cachedResultName": "Holdings_2026",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ksZvZR0cuQHYJ0-W0FUZUNm3rwdudlZxckLIUcgY_r8/edit#gid=231712198"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -393,7 +362,7 @@
       "typeVersion": 4.7,
       "position": [
         4448,
-        628
+        640
       ],
       "id": "48e4a0d0-afa8-4d69-83dd-90ecd38f061a",
       "name": "Append row in sheet",
@@ -495,6 +464,57 @@
       "typeVersion": 1,
       "id": "99024a26-43bf-4c0b-9d96-debfccceba57",
       "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "url": "=https://eodhd.com/api/eod/{{ $json.Symbol }}.US",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "api_token",
+              "value": " 6962c4de96b756.96575586"
+            },
+            {
+              "name": "fmt",
+              "value": "json"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2528,
+        512
+      ],
+      "id": "02a5ebc5-def5-4696-b44a-239ea00c0703",
+      "name": "Call EODHD Financial API"
+    },
+    {
+      "parameters": {
+        "model": "glm-4.7:cloud",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        3648,
+        688
+      ],
+      "id": "38ee2205-2f1f-46c5-ac95-0a81bb732eda",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "Vob7VZOr0cQCHgsU",
+          "name": "Ollama account"
+        }
+      }
     }
   ],
   "connections": {
@@ -525,25 +545,9 @@
         [],
         [
           {
-            "node": "HTTP Request",
+            "node": "Call EODHD Financial API",
             "type": "main",
             "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request1",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 1
           }
         ]
       ]
@@ -594,13 +598,7 @@
     },
     "OpenAI Chat Model": {
       "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "AI Agent": {
@@ -642,6 +640,33 @@
           {
             "node": "Loop Over Items",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call EODHD Financial API": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -7626,7 +7651,7 @@
       }
     ]
   },
-  "versionId": "be5f80eb-88ec-44cf-b978-d83256f5f8f6",
+  "versionId": "6d4e97fb-663f-4bbf-8a32-c8aa0aa68b47",
   "activeVersionId": null,
   "triggerCount": 0,
   "shared": [
