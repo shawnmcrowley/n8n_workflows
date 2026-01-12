@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-01T23:11:18.269Z",
+  "updatedAt": "2026-01-11T13:39:00.781Z",
   "createdAt": "2025-12-28T15:34:26.048Z",
   "id": "8YAGr0M3BfHXL2E5",
   "name": "MCP Email Sender",
@@ -28,7 +28,9 @@
         "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
         "emailType": "text",
         "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
-        "options": {}
+        "options": {
+          "appendAttribution": false
+        }
       },
       "type": "n8n-nodes-base.gmailTool",
       "typeVersion": 2.2,
@@ -69,8 +71,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "9715a646-ccfe-4a9f-9769-f1e27207d40b",
-  "activeVersionId": "9715a646-ccfe-4a9f-9769-f1e27207d40b",
+  "versionId": "243e025d-c05f-4ce7-a65c-3eca6ad6d217",
+  "activeVersionId": "243e025d-c05f-4ce7-a65c-3eca6ad6d217",
   "triggerCount": 1,
   "shared": [
     {
@@ -82,9 +84,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2025-12-28T16:01:35.652Z",
-    "createdAt": "2025-12-28T16:00:20.832Z",
-    "versionId": "9715a646-ccfe-4a9f-9769-f1e27207d40b",
+    "updatedAt": "2026-01-11T13:40:13.119Z",
+    "createdAt": "2026-01-11T13:39:00.784Z",
+    "versionId": "243e025d-c05f-4ce7-a65c-3eca6ad6d217",
     "workflowId": "8YAGr0M3BfHXL2E5",
     "nodes": [
       {
@@ -109,7 +111,9 @@
           "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
           "emailType": "text",
           "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
-          "options": {}
+          "options": {
+            "appendAttribution": false
+          }
         },
         "type": "n8n-nodes-base.gmailTool",
         "typeVersion": 2.2,
@@ -142,7 +146,7 @@
       }
     },
     "authors": "Shawn Crowley",
-    "name": "Version 9715a646",
+    "name": "Version 243e025d",
     "description": "",
     "autosaved": false
   },
