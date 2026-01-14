@@ -1,6 +1,7 @@
 services:
   n8n:
     image: n8nio/n8n:latest
+    container_name: n8n
     pull_policy: always
     restart: no
     ports:
@@ -8,18 +9,18 @@ services:
     depends_on:
       - postgres
     environment:
-      - DB_TYPE=${DB_TYPE}
-      - DB_POSTGRESDB_HOST=${DB_POSTGRESDB_HOST}
-      - DB_POSTGRESDB_PORT=${DB_POSTGRESDB_PORT}
-      - DB_POSTGRESDB_DATABASE=${DB_POSTGRESDB_DATABASE}
-      - DB_POSTGRESDB_SCHEMA=${DB_POSTGRESDB_SCHEMA}
-      - DB_POSTGRESDB_USER=${DB_POSTGRESDB_USER}
-      - DB_POSTGRESDB_PASSWORD=${DB_POSTGRESDB_PASSWORD}
-      - N8N_HOST=${N8N_HOST}
-      - N8N_PROTOCOL=${N8N_PROTOCOL}
-      - N8N_WEBHOOK_URL=${N8N_WEBHOOK_URL}
-      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
-      - N8N_RESTRICT_FILE_ACCESS_TO=/swagger-html  # Note - This is needed to write files in N8N 2.X
+      - DB_TYPE:${DB_TYPE}
+      - DB_POSTGRESDB_HOST:${DB_POSTGRESDB_HOST}
+      - DB_POSTGRESDB_PORT:${DB_POSTGRESDB_PORT}
+      - DB_POSTGRESDB_DATABASE:${DB_POSTGRESDB_DATABASE}
+      - DB_POSTGRESDB_SCHEMA:${DB_POSTGRESDB_SCHEMA}
+      - DB_POSTGRESDB_USER:${DB_POSTGRESDB_USER}
+      - DB_POSTGRESDB_PASSWORD:${DB_POSTGRESDB_PASSWORD}
+      - N8N_HOST:${N8N_HOST}
+      - N8N_PROTOCOL:${N8N_PROTOCOL}
+      - N8N_WEBHOOK_URL:${N8N_WEBHOOK_URL}
+      - GENERIC_TIMEZONE:${GENERIC_TIMEZONE}
+      - N8N_RESTRICT_FILE_ACCESS_TO:/swagger-html  # Note - This is needed to write files in N8N 2.X
 
   
     volumes:
@@ -31,6 +32,7 @@ services:
 
   postgres:
     image: ankane/pgvector
+    container_name: postgresdb
     environment:
       POSTGRES_USER: ${DB_POSTGRESDB_USER}
       POSTGRES_PASSWORD: ${DB_POSTGRESDB_PASSWORD}
@@ -41,6 +43,7 @@ services:
       - pgvector-data:/var/lib/postgresql/data
   pgadmin:
     image: dpage/pgadmin4:latest
+    container_name: pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
