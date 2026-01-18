@@ -11,28 +11,22 @@ services:
       - "5678:5678"
     networks:
       - integration_network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.n8n.rule=Host(`localhost`) && PathPrefix(`/n8n`)"
-      - "traefik.http.routers.n8n.entrypoints=websecure"
-      - "traefik.http.routers.n8n.tls=true"
-      - "traefik.http.services.n8n.loadbalancer.server.port=5678"
     depends_on:
       - postgres
     environment:
-      - DB_TYPE:${DB_TYPE}
-      - DB_POSTGRESDB_HOST:${DB_POSTGRESDB_HOST}
-      - DB_POSTGRESDB_PORT:${DB_POSTGRESDB_PORT}
-      - DB_POSTGRESDB_DATABASE:${DB_POSTGRESDB_DATABASE}
-      - DB_POSTGRESDB_SCHEMA:${DB_POSTGRESDB_SCHEMA}
-      - DB_POSTGRESDB_USER:${DB_POSTGRESDB_USER}
-      - DB_POSTGRESDB_PASSWORD:${DB_POSTGRESDB_PASSWORD}
-      - N8N_HOST:${N8N_HOST}
-      - N8N_PROTOCOL:${N8N_PROTOCOL}
-      - N8N_WEBHOOK_URL:${N8N_WEBHOOK_URL}
-      - GENERIC_TIMEZONE:${GENERIC_TIMEZONE}
-      - N8N_RESTRICT_FILE_ACCESS_TO:/swagger-html  # Note - This is needed to write files in N8N 2.X
-
+      - DB_TYPE=${DB_TYPE}
+      - DB_POSTGRESDB_HOST=${DB_POSTGRESDB_HOST}
+      - DB_POSTGRESDB_PORT=${DB_POSTGRESDB_PORT}
+      - DB_POSTGRESDB_DATABASE=${DB_POSTGRESDB_DATABASE}
+      - DB_POSTGRESDB_SCHEMA=${DB_POSTGRESDB_SCHEMA}
+      - DB_POSTGRESDB_USER=${DB_POSTGRESDB_USER}
+      - DB_POSTGRESDB_PASSWORD=${DB_POSTGRESDB_PASSWORD}
+      - N8N_HOST=${N8N_HOST}
+      - N8N_PROTOCOL=${N8N_PROTOCAL}
+      - N8N_WEBHOOK_URL=${N8N_WEBHOOK_URL}
+      - NODE_ENV=production
+      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
+      - N8N_RESTRICT_FILE_ACCESS_TO=/swagger-html
   
     volumes:
       - n8n-data:/home/node/.n8n
@@ -46,9 +40,9 @@ services:
     container_name: postgresdb
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${DB_POSTGRESDB_USER}
-      POSTGRES_PASSWORD: ${DB_POSTGRESDB_PASSWORD}
-      POSTGRES_DB: ${DB_POSTGRESDB_DATABASE}
+      - POSTGRES_USER=${DB_POSTGRESDB_USER}
+      - POSTGRES_PASSWORD=${DB_POSTGRESDB_PASSWORD}
+      - POSTGRES_DB=${DB_POSTGRESDB_DATABASE}
     ports:
       - "5432:5432"
     networks:
@@ -60,20 +54,14 @@ services:
     container_name: pgadmin
     restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+      
     ports:
       - "5050:80"
     networks:
       - integration_network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.pgadmin.rule=Host(`localhost`) && PathPrefix(`/pgadmin`)"
-      - "traefik.http.routers.pgadmin.entrypoints=websecure"
-      - "traefik.http.routers.pgadmin.tls=true"
-      - "traefik.http.services.pgadmin.loadbalancer.server.port=5050"
-      - "traefik.http.middlewares.pgadmin-strip.stripprefix.prefixes=/pgadmin"
-      - "traefik.http.routers.pgadmin.middlewares=pgadmin-strip"
+   
     depends_on:
       - postgres
     volumes:
@@ -83,4 +71,3 @@ volumes:
   n8n-data:
   pgvector-data:
   pgadmin-data:
-   
