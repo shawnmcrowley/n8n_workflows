@@ -1,79 +1,96 @@
 {
-  "updatedAt": "2026-01-14T21:20:03.042Z",
-  "createdAt": "2026-01-14T20:23:58.017Z",
-  "id": "aGTFa_y39tDml_iIFzcAv",
+  "updatedAt": "2026-01-17T18:19:31.265Z",
+  "createdAt": "2025-12-15T19:34:19.460Z",
+  "id": "VrreoHxSO7d0UAO2",
   "name": "AI Agent to chat with Snowflake database",
   "active": true,
   "isArchived": false,
   "nodes": [
     {
+      "name": "When chat message received",
       "parameters": {
         "options": {}
       },
-      "id": "cc203ff5-672b-4409-b3f6-0033c5923419",
-      "name": "When chat message received",
-      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "position": [
-        -560,
-        -16
+        32,
+        928
       ],
-      "webhookId": "8cc040be-d37a-4090-b93e-44603371d13a",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
-      "disabled": true
+      "webhookId": "8cc040be-d37a-4090-b93e-44603371d13a",
+      "id": "a5b8617e-563f-446a-8e1d-bce121f245f4"
     },
     {
+      "name": "AI Agent1",
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are Snowflake SQL assistant.\n\nUse tools to retrieve data from Snowflake and answer user.\n\nIMPORTANT Always check database schema and table definition for preparing SQL query."
+        }
+      },
+      "position": [
+        448,
+        816
+      ],
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "id": "1b69e537-ee28-45f3-8323-6dff48cc70aa"
+    },
+    {
+      "name": "Simple Memory",
       "parameters": {
         "sessionIdType": "customKey",
         "sessionKey": "={{ $('When chat message received').item.json.sessionId }}"
       },
-      "id": "048e790d-1a53-43f2-9434-0f5190e513f6",
-      "name": "Simple Memory",
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "position": [
-        -208,
-        192
+        384,
+        1040
       ],
-      "typeVersion": 1.3
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "id": "4cc7e324-7f98-49af-896e-8230ff08b6bc"
     },
     {
-      "parameters": {
-        "descriptionType": "manual",
-        "toolDescription": "Get table definition to find all columns and types.",
-        "operation": "executeQuery",
-        "query": "SELECT \n    column_name,\n    data_type\n\nFROM \n    WEB_APPLICATIONS.information_schema.columns\nWHERE \n    table_name = '{{ $fromAI(\"table_name\") }}'\n    AND table_schema = 'WEBAPP_AIWORKFLOW'\nORDER BY \n    ordinal_position;\n"
-      },
-      "id": "997b7cb2-0b22-4fb8-a799-f0b2a6ade173",
-      "name": "Get table definition",
-      "type": "n8n-nodes-base.snowflakeTool",
-      "position": [
-        176,
-        192
-      ],
-      "typeVersion": 1,
       "credentials": {
         "snowflake": {
-          "id": "uw8Q4gcsElUug50Z",
+          "id": "oi8Cr7VRLwSbn6CV",
           "name": "Snowflake account"
         }
-      }
-    },
-    {
-      "parameters": {
-        "path": "data-report",
-        "responseMode": "responseNode",
-        "options": {}
       },
-      "id": "e6d6a993-4ed0-493f-be08-05af87cc3db7",
-      "name": "Webhook",
-      "type": "n8n-nodes-base.webhook",
+      "name": "Get table definition",
+      "parameters": {
+        "descriptionType": "manual",
+        "operation": "executeQuery",
+        "query": "SELECT \n    column_name,\n    data_type\n\nFROM \n    WEB_APPLICATIONS.information_schema.columns\nWHERE \n    table_name = '{{ $fromAI(\"table_name\") }}'\n    AND table_schema = 'WEBAPP_AIWORKFLOW'\nORDER BY \n    ordinal_position;\n",
+        "toolDescription": "Get table definition to find all columns and types."
+      },
       "position": [
-        -112,
-        912
+        768,
+        1040
       ],
-      "webhookId": "87893585-d157-468d-a9af-7238784e814c",
-      "typeVersion": 2
+      "type": "n8n-nodes-base.snowflakeTool",
+      "typeVersion": 1,
+      "id": "4777ceb7-0d5d-4f61-9767-bdb76dd30586"
     },
     {
+      "name": "Webhook",
+      "parameters": {
+        "options": {},
+        "path": "87893585-d157-468d-a9af-7238784e814c",
+        "responseMode": "responseNode"
+      },
+      "position": [
+        32,
+        1840
+      ],
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "webhookId": "87893585-d157-468d-a9af-7238784e814c",
+      "id": "d6b98488-a877-4afe-b4cc-295abf0c4d83"
+    },
+    {
+      "name": "Set HTML",
+      "onError": "continueErrorOutput",
       "parameters": {
         "assignments": {
           "assignments": [
@@ -87,68 +104,67 @@
         },
         "options": {}
       },
-      "id": "49c03ccd-7966-49f1-bebd-f37d218cb84a",
-      "name": "Set HTML",
+      "position": [
+        704,
+        1760
+      ],
       "type": "n8n-nodes-base.set",
-      "position": [
-        560,
-        832
-      ],
       "typeVersion": 3.4,
-      "onError": "continueErrorOutput"
+      "id": "c2e8aad8-c0bf-4811-b40d-d695a8745673"
     },
     {
-      "parameters": {
-        "respondWith": "text",
-        "responseBody": "={{ $json.html }}",
-        "options": {}
-      },
-      "id": "d435f695-9453-49f3-bb44-40bbe98d9fc3",
       "name": "Respond to Webhook",
-      "type": "n8n-nodes-base.respondToWebhook",
+      "parameters": {
+        "options": {},
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}"
+      },
       "position": [
-        1008,
-        912
+        1152,
+        1840
       ],
-      "typeVersion": 1.1
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "id": "838225b5-06ef-42ef-8e82-84baaf9af631"
     },
     {
+      "credentials": {
+        "snowflake": {
+          "id": "oi8Cr7VRLwSbn6CV",
+          "name": "Snowflake account"
+        }
+      },
+      "name": "Snowflake1",
+      "onError": "continueErrorOutput",
       "parameters": {
         "operation": "executeQuery",
         "query": "{{ $json.query.sql }}"
       },
-      "id": "4bccc0d4-4593-4336-bd79-3fe7a069200a",
-      "name": "Snowflake1",
-      "type": "n8n-nodes-base.snowflake",
       "position": [
-        112,
-        912
+        256,
+        1840
       ],
       "retryOnFail": false,
+      "type": "n8n-nodes-base.snowflake",
       "typeVersion": 1,
-      "credentials": {
-        "snowflake": {
-          "id": "uw8Q4gcsElUug50Z",
-          "name": "Snowflake account"
-        }
-      },
-      "onError": "continueErrorOutput"
+      "id": "c174c286-663c-4a24-ab70-b969d3e00af0"
     },
     {
+      "name": "Aggregate1",
       "parameters": {
         "aggregate": "aggregateAllItemData",
         "options": {}
       },
-      "id": "a3599e15-6af6-4e81-a838-77c0894bdd58",
-      "name": "Aggregate1",
-      "type": "n8n-nodes-base.aggregate",
       "position": [
-        336,
-        832
+        480,
+        1760
       ],
-      "typeVersion": 1
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "id": "89f7ccf6-c130-4d7f-a41c-babc5581a120"
     },
     {
+      "name": "When Executed by Another Workflow",
       "parameters": {
         "workflowInputs": {
           "values": [
@@ -158,219 +174,217 @@
           ]
         }
       },
-      "id": "19242508-8d99-47a6-8cdc-3420d01348ec",
-      "name": "When Executed by Another Workflow",
-      "type": "n8n-nodes-base.executeWorkflowTrigger",
       "position": [
-        480,
-        288
+        32,
+        1440
       ],
-      "typeVersion": 1.1
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "id": "d9ea31f1-8a38-4b18-9c44-a7539b69150b"
     },
     {
+      "name": "Retrieve Data",
       "parameters": {
         "description": "Generate custom SQL queries using knowledge about DB schema and table definitions to provide needed response for user request.\nUse ->> operator to extract JSON data.\n\nSupported functions for big data analysis:\n• GROUP BY – for grouping data\n• SUM() – for summing values\n• AVG() – for calculating averages\n• COUNT() – for counting records\n• MIN() – for finding the minimum value\n• MAX() – for finding the maximum value\n• MEDIAN() – for median calculation\n• STDDEV() – for standard deviation\n• VARIANCE() – for variance calculation\n• PERCENTILE_CONT() – for percentile calculations\n• MODE() – for most frequent value\n• TREND() – for trend analysis over time\n• WINDOW FUNCTIONS – for advanced analytics (e.g., ROW_NUMBER(), RANK(), PARTITION BY)\n\nQuery example:\nSELECT * FROM FILES",
         "workflowId": {
           "__rl": true,
-          "value": "aGTFa_y39tDml_iIFzcAv",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/aGTFa_y39tDml_iIFzcAv",
-          "cachedResultName": "AI Agent to chat with Snowflake database"
+          "mode": "id",
+          "value": "VrreoHxSO7d0UAO2"
         },
         "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false,
           "mappingMode": "defineBelow",
-          "value": {
-            "query": "={{ $fromAI('query', ``, 'string') }}"
-          },
           "matchingColumns": [
             "query"
           ],
           "schema": [
             {
-              "id": "query",
-              "displayName": "query",
-              "required": false,
+              "canBeUsedToMatch": true,
               "defaultMatch": false,
               "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
+              "displayName": "query",
+              "id": "query",
+              "removed": false,
+              "required": false,
+              "type": "string"
             }
           ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
+          "value": {
+            "query": "={{ $fromAI('query', ``, 'string') }}"
+          }
         }
       },
-      "id": "d5c1a319-5a4d-48ff-9a66-40e7180fa997",
-      "name": "Retrieve Data",
-      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "position": [
-        48,
-        192
+        640,
+        1040
       ],
-      "typeVersion": 2.2
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "id": "2dc3a12d-30e6-4b6a-a973-12bbcf1936e0"
     },
     {
+      "name": "Sticky Note",
       "parameters": {
         "content": "### Tool\n",
         "height": 560,
         "width": 1140
       },
-      "id": "a2e62839-cb3e-4381-9b86-a71afcac8173",
-      "name": "Sticky Note",
-      "type": "n8n-nodes-base.stickyNote",
       "position": [
-        416,
-        32
+        -48,
+        1136
       ],
-      "typeVersion": 1
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "id": "7841c8f9-df7f-4504-a13a-b496343b42c2"
     },
     {
+      "name": "Sticky Note1",
       "parameters": {
         "content": "### Report workflow",
         "height": 480,
         "width": 1360
       },
-      "id": "9463e9ae-9ff7-4ad5-a9cf-3438f7abd0b9",
-      "name": "Sticky Note1",
-      "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -192,
-        656
+        -48,
+        1584
       ],
-      "typeVersion": 1
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "id": "a861b02a-2da6-4791-9a5d-9acebc67d4e5"
     },
     {
+      "name": "Sticky Note2",
       "parameters": {
         "content": "### Agent",
         "height": 440,
         "width": 900
       },
-      "id": "4a887e84-3249-412d-9e20-ba7eab063547",
-      "name": "Sticky Note2",
-      "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -608,
-        -96
+        -16,
+        752
       ],
-      "typeVersion": 1
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "id": "03815a31-4a66-421e-ad45-f156b0491301"
     },
     {
+      "credentials": {
+        "snowflake": {
+          "id": "oi8Cr7VRLwSbn6CV",
+          "name": "Snowflake account"
+        }
+      },
+      "name": "Execute SQL",
+      "onError": "continueErrorOutput",
       "parameters": {
         "operation": "executeQuery",
         "query": "{{ $json.query }}"
       },
-      "id": "db88d102-866b-4323-8748-36f4a5d68758",
-      "name": "Execute SQL",
-      "type": "n8n-nodes-base.snowflake",
       "position": [
-        704,
-        288
+        256,
+        1440
       ],
       "retryOnFail": false,
+      "type": "n8n-nodes-base.snowflake",
       "typeVersion": 1,
-      "credentials": {
-        "snowflake": {
-          "id": "uw8Q4gcsElUug50Z",
-          "name": "Snowflake account"
-        }
-      },
-      "onError": "continueErrorOutput"
+      "id": "76b7dff9-3e94-42fc-9c05-946159d539fd"
     },
     {
+      "name": "Aggregate Data",
       "parameters": {
         "aggregate": "aggregateAllItemData",
         "options": {}
       },
-      "id": "8dc7b3ca-b424-45ce-9466-ebd9f34a1f2c",
-      "name": "Aggregate Data",
-      "type": "n8n-nodes-base.aggregate",
       "position": [
-        928,
-        192
+        480,
+        1344
       ],
-      "typeVersion": 1
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "id": "7baac261-b0fb-4591-ae7e-8ff7add504c1"
     },
     {
+      "name": "If Count>100",
       "parameters": {
         "conditions": {
-          "options": {
-            "version": 2,
-            "leftValue": "",
-            "caseSensitive": true,
-            "typeValidation": "strict"
-          },
+          "combinator": "and",
           "conditions": [
             {
               "id": "5a485a5a-28fb-4914-8fb6-131a159db08d",
-              "operator": {
-                "type": "array",
-                "operation": "notEmpty",
-                "singleValue": true
-              },
               "leftValue": "={{ $json.data }}",
+              "operator": {
+                "operation": "notEmpty",
+                "singleValue": true,
+                "type": "array"
+              },
               "rightValue": 5
             }
           ],
-          "combinator": "and"
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          }
         },
         "options": {}
       },
-      "id": "30891918-87c6-4d65-b40d-e894be2d80c6",
-      "name": "If Count>100",
+      "position": [
+        704,
+        1344
+      ],
       "type": "n8n-nodes-base.if",
-      "position": [
-        1152,
-        192
-      ],
-      "typeVersion": 2.2
+      "typeVersion": 2.2,
+      "id": "7f186d10-7d71-4e41-9964-e720b694ec23"
     },
     {
-      "parameters": {
-        "mode": "raw",
-        "jsonOutput": "={\"output\":\"[Link to report](http://localhost:5678/webhook/data-report?sql={{ $('When Executed by Another Workflow').item.json.query.urlEncode() }})\"}",
-        "options": {}
-      },
-      "id": "735ec257-34f4-414e-953b-2e3768a55d9b",
       "name": "Link to Report",
-      "type": "n8n-nodes-base.set",
-      "position": [
-        1376,
-        96
-      ],
-      "typeVersion": 3.4
-    },
-    {
       "parameters": {
+        "jsonOutput": "={\"output\":\"[Link to report](http://localhost:5678/webhook/87893585-d157-468d-a9af-7238784e814c?sql={{ $('When Executed by Another Workflow').item.json.query.urlEncode() }})\"}",
         "mode": "raw",
-        "jsonOutput": "={{ $json }}",
         "options": {}
       },
-      "id": "8b4b4742-0ad5-4305-a562-910d6719f6c8",
-      "name": "Return Data",
-      "type": "n8n-nodes-base.set",
-      "position": [
-        1376,
-        288
-      ],
-      "typeVersion": 3.4
-    },
-    {
-      "parameters": {
-        "mode": "raw",
-        "jsonOutput": "={{ $json }}",
-        "options": {}
-      },
-      "id": "ee6b445d-89f0-4322-847f-3b1b818b9553",
-      "name": "Return Error",
-      "type": "n8n-nodes-base.set",
       "position": [
         928,
-        384
+        1248
       ],
-      "typeVersion": 3.4
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "id": "643d62de-3427-406c-a2f7-ea9a15f51f52"
     },
     {
+      "name": "Return Data",
+      "parameters": {
+        "jsonOutput": "={{ $json }}",
+        "mode": "raw",
+        "options": {}
+      },
+      "position": [
+        928,
+        1440
+      ],
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "id": "e257695c-9512-4f87-bb2b-62def98c91d2"
+    },
+    {
+      "name": "Return Error",
+      "parameters": {
+        "jsonOutput": "={{ $json }}",
+        "mode": "raw",
+        "options": {}
+      },
+      "position": [
+        480,
+        1536
+      ],
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "id": "0e801546-70f4-48cb-9f93-95c5f935063e"
+    },
+    {
+      "name": "Error page",
       "parameters": {
         "assignments": {
           "assignments": [
@@ -384,114 +398,116 @@
         },
         "options": {}
       },
-      "id": "3b55d319-0386-45dd-8598-89c197aa499c",
-      "name": "Error page",
-      "type": "n8n-nodes-base.set",
       "position": [
-        784,
-        976
+        928,
+        1904
       ],
-      "typeVersion": 3.4
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "id": "7e062a30-f1cc-4898-ae54-5e2e955439f1"
     },
     {
+      "name": "Sticky Note4",
       "parameters": {
-        "model": "glm-4.7:cloud",
-        "options": {}
+        "color": 5,
+        "content": "### Replace webhook address",
+        "height": 80
       },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
-      "typeVersion": 1,
       "position": [
-        -336,
-        192
+        2064,
+        816
       ],
-      "id": "056a5885-7743-4a8a-9c15-e3b0e69a165f",
-      "name": "Ollama Chat Model",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "id": "79d899db-beac-45fc-8795-5e6f6884d601"
+    },
+    {
+      "name": "Sticky Note5",
+      "parameters": {
+        "color": 5,
+        "content": "### Map this workflow",
+        "height": 80,
+        "width": 160
+      },
+      "position": [
+        304,
+        1264
+      ],
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "id": "1087bcff-22fe-4811-b72f-8ff99b4b44b8"
+    },
+    {
+      "name": "Sticky Note6",
+      "parameters": {
+        "color": 5,
+        "content": "### Replace name of schema and database",
+        "height": 80
+      },
+      "position": [
+        560,
+        1264
+      ],
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "id": "08818af9-ef1a-4c5e-84ac-1641480cdcee"
+    },
+    {
       "credentials": {
         "ollamaApi": {
-          "id": "exXKRxV15xGdnWOs",
+          "id": "Vob7VZOr0cQCHgsU",
           "name": "Ollama account"
         }
-      }
+      },
+      "name": "Ollama Chat Model",
+      "parameters": {
+        "model": "gpt-oss:120b-cloud",
+        "options": {}
+      },
+      "position": [
+        256,
+        1040
+      ],
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "id": "395a131f-e6f9-4f66-aa9b-fe597c3f7454"
     },
     {
-      "parameters": {
-        "descriptionType": "manual",
-        "toolDescription": "Get list of all tables in database",
-        "operation": "executeQuery",
-        "query": "SELECT table_schema, table_name\nFROM information_schema.tables\nWHERE table_schema = 'WEBAPP_AIWORKFLOW';"
-      },
-      "id": "635fa4be-948b-430e-8b12-e928464f93ed",
-      "name": "DB Schema",
-      "type": "n8n-nodes-base.snowflakeTool",
-      "position": [
-        -80,
-        192
-      ],
-      "typeVersion": 1,
       "credentials": {
         "snowflake": {
-          "id": "uw8Q4gcsElUug50Z",
+          "id": "oi8Cr7VRLwSbn6CV",
           "name": "Snowflake account"
         }
-      }
-    },
-    {
-      "parameters": {
-        "hasOutputParser": true,
-        "options": {
-          "systemMessage": "You are Snowflake SQL assistant.\n\nUse tools to retrieve data from Snowflake and answer user.\n\nIMPORTANT Always check database schema and table definition for preparing SQL query."
-        }
       },
-      "id": "7dffe7ba-d613-4562-89e2-d2581a8fe6bc",
-      "name": "AI Agent",
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "position": [
-        -144,
-        -32
-      ],
-      "typeVersion": 2
-    },
-    {
+      "name": "DB Schema",
       "parameters": {
-        "path": "data-request"
+        "descriptionType": "manual",
+        "operation": "executeQuery",
+        "query": "SELECT table_schema, table_name\nFROM information_schema.tables\nWHERE table_schema = 'WEBAPP_AIWORKFLOW';",
+        "toolDescription": "Get list of all tables in database"
       },
-      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
-      "typeVersion": 2,
       "position": [
-        -624,
-        176
+        512,
+        1040
       ],
-      "id": "f82af678-a181-4e9d-b816-c2585218acd9",
-      "name": "MCP Server Trigger",
-      "webhookId": "1ce18517-1a33-451f-b23d-9c9e9247d7f0"
+      "type": "n8n-nodes-base.snowflakeTool",
+      "typeVersion": 1,
+      "id": "75021462-acb0-4ef2-a4da-6ec4c9209d8f"
     }
   ],
   "connections": {
-    "Webhook": {
+    "AI Agent1": {
       "main": [
-        [
-          {
-            "node": "Snowflake1",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
-    "Set HTML": {
+    "Aggregate Data": {
       "main": [
         [
           {
-            "node": "Respond to Webhook",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Error page",
-            "type": "main",
-            "index": 0
+            "index": 0,
+            "node": "If Count>100",
+            "type": "main"
           }
         ]
       ]
@@ -500,151 +516,9 @@
       "main": [
         [
           {
+            "index": 0,
             "node": "Set HTML",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Error page": {
-      "main": [
-        [
-          {
-            "node": "Respond to Webhook",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Snowflake1": {
-      "main": [
-        [
-          {
-            "node": "Aggregate1",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Error page",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Execute SQL": {
-      "main": [
-        [
-          {
-            "node": "Aggregate Data",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Return Error",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If Count>100": {
-      "main": [
-        [
-          {
-            "node": "Link to Report",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Return Data",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Retrieve Data": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Simple Memory": {
-      "ai_memory": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Aggregate Data": {
-      "main": [
-        [
-          {
-            "node": "If Count>100",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get table definition": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "When chat message received": {
-      "main": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "When Executed by Another Workflow": {
-      "main": [
-        [
-          {
-            "node": "Execute SQL",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Ollama Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
-            "index": 0
+            "type": "main"
           }
         ]
       ]
@@ -653,9 +527,169 @@
       "ai_tool": [
         [
           {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
+            "index": 0,
+            "node": "AI Agent1",
+            "type": "ai_tool"
+          }
+        ]
+      ]
+    },
+    "Error page": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "Respond to Webhook",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "Execute SQL": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "Aggregate Data",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "Return Error",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "Get table definition": {
+      "ai_tool": [
+        [
+          {
+            "index": 0,
+            "node": "AI Agent1",
+            "type": "ai_tool"
+          }
+        ]
+      ]
+    },
+    "If Count>100": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "Link to Report",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "Return Data",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "index": 0,
+            "node": "AI Agent1",
+            "type": "ai_languageModel"
+          }
+        ]
+      ]
+    },
+    "Retrieve Data": {
+      "ai_tool": [
+        [
+          {
+            "index": 0,
+            "node": "AI Agent1",
+            "type": "ai_tool"
+          }
+        ]
+      ]
+    },
+    "Set HTML": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "Respond to Webhook",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "Error page",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "index": 0,
+            "node": "AI Agent1",
+            "type": "ai_memory"
+          }
+        ]
+      ]
+    },
+    "Snowflake1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "Aggregate1",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "Error page",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "Snowflake1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "Execute SQL",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "AI Agent1",
+            "type": "main"
           }
         ]
       ]
@@ -663,99 +697,118 @@
   },
   "settings": {
     "executionOrder": "v1",
-    "availableInMCP": true
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
   },
   "staticData": null,
   "meta": {
+    "templateId": "5435",
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "2aa63f58-c0de-42cc-aa9c-e3714c0cab95",
-  "activeVersionId": "850acdf8-d1c8-43b5-98ef-b9d959310133",
+  "versionId": "fffe6ae1-2541-4dbd-8197-e7a3eadabbbc",
+  "activeVersionId": "fffe6ae1-2541-4dbd-8197-e7a3eadabbbc",
   "triggerCount": 2,
   "shared": [
     {
-      "updatedAt": "2026-01-14T20:23:58.021Z",
-      "createdAt": "2026-01-14T20:23:58.021Z",
+      "updatedAt": "2025-12-15T19:34:19.460Z",
+      "createdAt": "2025-12-15T19:34:19.460Z",
       "role": "workflow:owner",
-      "workflowId": "aGTFa_y39tDml_iIFzcAv",
-      "projectId": "7HUpufBTbPod8CZO"
+      "workflowId": "VrreoHxSO7d0UAO2",
+      "projectId": "aRJv9cLftn98cx8V"
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-01-14T21:19:22.000Z",
-    "createdAt": "2026-01-14T21:19:18.889Z",
-    "versionId": "850acdf8-d1c8-43b5-98ef-b9d959310133",
-    "workflowId": "aGTFa_y39tDml_iIFzcAv",
+    "updatedAt": "2026-01-17T18:19:31.267Z",
+    "createdAt": "2026-01-17T18:19:31.267Z",
+    "versionId": "fffe6ae1-2541-4dbd-8197-e7a3eadabbbc",
+    "workflowId": "VrreoHxSO7d0UAO2",
     "nodes": [
       {
+        "name": "When chat message received",
         "parameters": {
           "options": {}
         },
-        "id": "cc203ff5-672b-4409-b3f6-0033c5923419",
-        "name": "When chat message received",
-        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
         "position": [
-          -560,
-          -16
+          32,
+          928
         ],
-        "webhookId": "8cc040be-d37a-4090-b93e-44603371d13a",
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
         "typeVersion": 1.1,
-        "disabled": true
+        "webhookId": "8cc040be-d37a-4090-b93e-44603371d13a",
+        "id": "a5b8617e-563f-446a-8e1d-bce121f245f4"
       },
       {
+        "name": "AI Agent1",
+        "parameters": {
+          "hasOutputParser": true,
+          "options": {
+            "systemMessage": "You are Snowflake SQL assistant.\n\nUse tools to retrieve data from Snowflake and answer user.\n\nIMPORTANT Always check database schema and table definition for preparing SQL query."
+          }
+        },
+        "position": [
+          448,
+          816
+        ],
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2,
+        "id": "1b69e537-ee28-45f3-8323-6dff48cc70aa"
+      },
+      {
+        "name": "Simple Memory",
         "parameters": {
           "sessionIdType": "customKey",
           "sessionKey": "={{ $('When chat message received').item.json.sessionId }}"
         },
-        "id": "048e790d-1a53-43f2-9434-0f5190e513f6",
-        "name": "Simple Memory",
-        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
         "position": [
-          -208,
-          192
+          384,
+          1040
         ],
-        "typeVersion": 1.3
+        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+        "typeVersion": 1.3,
+        "id": "4cc7e324-7f98-49af-896e-8230ff08b6bc"
       },
       {
-        "parameters": {
-          "descriptionType": "manual",
-          "toolDescription": "Get table definition to find all columns and types.",
-          "operation": "executeQuery",
-          "query": "SELECT \n    column_name,\n    data_type\n\nFROM \n    WEB_APPLICATIONS.information_schema.columns\nWHERE \n    table_name = '{{ $fromAI(\"table_name\") }}'\n    AND table_schema = 'WEBAPP_AIWORKFLOW'\nORDER BY \n    ordinal_position;\n"
-        },
-        "id": "997b7cb2-0b22-4fb8-a799-f0b2a6ade173",
-        "name": "Get table definition",
-        "type": "n8n-nodes-base.snowflakeTool",
-        "position": [
-          176,
-          192
-        ],
-        "typeVersion": 1,
         "credentials": {
           "snowflake": {
-            "id": "uw8Q4gcsElUug50Z",
+            "id": "oi8Cr7VRLwSbn6CV",
             "name": "Snowflake account"
           }
-        }
-      },
-      {
-        "parameters": {
-          "path": "data-report",
-          "responseMode": "responseNode",
-          "options": {}
         },
-        "id": "e6d6a993-4ed0-493f-be08-05af87cc3db7",
-        "name": "Webhook",
-        "type": "n8n-nodes-base.webhook",
+        "name": "Get table definition",
+        "parameters": {
+          "descriptionType": "manual",
+          "operation": "executeQuery",
+          "query": "SELECT \n    column_name,\n    data_type\n\nFROM \n    WEB_APPLICATIONS.information_schema.columns\nWHERE \n    table_name = '{{ $fromAI(\"table_name\") }}'\n    AND table_schema = 'WEBAPP_AIWORKFLOW'\nORDER BY \n    ordinal_position;\n",
+          "toolDescription": "Get table definition to find all columns and types."
+        },
         "position": [
-          -112,
-          912
+          768,
+          1040
         ],
-        "webhookId": "87893585-d157-468d-a9af-7238784e814c",
-        "typeVersion": 2
+        "type": "n8n-nodes-base.snowflakeTool",
+        "typeVersion": 1,
+        "id": "4777ceb7-0d5d-4f61-9767-bdb76dd30586"
       },
       {
+        "name": "Webhook",
+        "parameters": {
+          "options": {},
+          "path": "87893585-d157-468d-a9af-7238784e814c",
+          "responseMode": "responseNode"
+        },
+        "position": [
+          32,
+          1840
+        ],
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "webhookId": "87893585-d157-468d-a9af-7238784e814c",
+        "id": "d6b98488-a877-4afe-b4cc-295abf0c4d83"
+      },
+      {
+        "name": "Set HTML",
+        "onError": "continueErrorOutput",
         "parameters": {
           "assignments": {
             "assignments": [
@@ -769,68 +822,67 @@
           },
           "options": {}
         },
-        "id": "49c03ccd-7966-49f1-bebd-f37d218cb84a",
-        "name": "Set HTML",
+        "position": [
+          704,
+          1760
+        ],
         "type": "n8n-nodes-base.set",
-        "position": [
-          560,
-          832
-        ],
         "typeVersion": 3.4,
-        "onError": "continueErrorOutput"
+        "id": "c2e8aad8-c0bf-4811-b40d-d695a8745673"
       },
       {
-        "parameters": {
-          "respondWith": "text",
-          "responseBody": "={{ $json.html }}",
-          "options": {}
-        },
-        "id": "d435f695-9453-49f3-bb44-40bbe98d9fc3",
         "name": "Respond to Webhook",
-        "type": "n8n-nodes-base.respondToWebhook",
+        "parameters": {
+          "options": {},
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}"
+        },
         "position": [
-          1008,
-          912
+          1152,
+          1840
         ],
-        "typeVersion": 1.1
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "id": "838225b5-06ef-42ef-8e82-84baaf9af631"
       },
       {
+        "credentials": {
+          "snowflake": {
+            "id": "oi8Cr7VRLwSbn6CV",
+            "name": "Snowflake account"
+          }
+        },
+        "name": "Snowflake1",
+        "onError": "continueErrorOutput",
         "parameters": {
           "operation": "executeQuery",
           "query": "{{ $json.query.sql }}"
         },
-        "id": "4bccc0d4-4593-4336-bd79-3fe7a069200a",
-        "name": "Snowflake1",
-        "type": "n8n-nodes-base.snowflake",
         "position": [
-          112,
-          912
+          256,
+          1840
         ],
         "retryOnFail": false,
+        "type": "n8n-nodes-base.snowflake",
         "typeVersion": 1,
-        "credentials": {
-          "snowflake": {
-            "id": "uw8Q4gcsElUug50Z",
-            "name": "Snowflake account"
-          }
-        },
-        "onError": "continueErrorOutput"
+        "id": "c174c286-663c-4a24-ab70-b969d3e00af0"
       },
       {
+        "name": "Aggregate1",
         "parameters": {
           "aggregate": "aggregateAllItemData",
           "options": {}
         },
-        "id": "a3599e15-6af6-4e81-a838-77c0894bdd58",
-        "name": "Aggregate1",
-        "type": "n8n-nodes-base.aggregate",
         "position": [
-          336,
-          832
+          480,
+          1760
         ],
-        "typeVersion": 1
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "id": "89f7ccf6-c130-4d7f-a41c-babc5581a120"
       },
       {
+        "name": "When Executed by Another Workflow",
         "parameters": {
           "workflowInputs": {
             "values": [
@@ -840,219 +892,217 @@
             ]
           }
         },
-        "id": "19242508-8d99-47a6-8cdc-3420d01348ec",
-        "name": "When Executed by Another Workflow",
-        "type": "n8n-nodes-base.executeWorkflowTrigger",
         "position": [
-          480,
-          288
+          32,
+          1440
         ],
-        "typeVersion": 1.1
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "id": "d9ea31f1-8a38-4b18-9c44-a7539b69150b"
       },
       {
+        "name": "Retrieve Data",
         "parameters": {
           "description": "Generate custom SQL queries using knowledge about DB schema and table definitions to provide needed response for user request.\nUse ->> operator to extract JSON data.\n\nSupported functions for big data analysis:\n• GROUP BY – for grouping data\n• SUM() – for summing values\n• AVG() – for calculating averages\n• COUNT() – for counting records\n• MIN() – for finding the minimum value\n• MAX() – for finding the maximum value\n• MEDIAN() – for median calculation\n• STDDEV() – for standard deviation\n• VARIANCE() – for variance calculation\n• PERCENTILE_CONT() – for percentile calculations\n• MODE() – for most frequent value\n• TREND() – for trend analysis over time\n• WINDOW FUNCTIONS – for advanced analytics (e.g., ROW_NUMBER(), RANK(), PARTITION BY)\n\nQuery example:\nSELECT * FROM FILES",
           "workflowId": {
             "__rl": true,
-            "value": "aGTFa_y39tDml_iIFzcAv",
-            "mode": "list",
-            "cachedResultUrl": "/workflow/aGTFa_y39tDml_iIFzcAv",
-            "cachedResultName": "AI Agent to chat with Snowflake database"
+            "mode": "id",
+            "value": "VrreoHxSO7d0UAO2"
           },
           "workflowInputs": {
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false,
             "mappingMode": "defineBelow",
-            "value": {
-              "query": "={{ $fromAI('query', ``, 'string') }}"
-            },
             "matchingColumns": [
               "query"
             ],
             "schema": [
               {
-                "id": "query",
-                "displayName": "query",
-                "required": false,
+                "canBeUsedToMatch": true,
                 "defaultMatch": false,
                 "display": true,
-                "canBeUsedToMatch": true,
-                "type": "string",
-                "removed": false
+                "displayName": "query",
+                "id": "query",
+                "removed": false,
+                "required": false,
+                "type": "string"
               }
             ],
-            "attemptToConvertTypes": false,
-            "convertFieldsToString": false
+            "value": {
+              "query": "={{ $fromAI('query', ``, 'string') }}"
+            }
           }
         },
-        "id": "d5c1a319-5a4d-48ff-9a66-40e7180fa997",
-        "name": "Retrieve Data",
-        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
         "position": [
-          48,
-          192
+          640,
+          1040
         ],
-        "typeVersion": 2.2
+        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+        "typeVersion": 2.2,
+        "id": "2dc3a12d-30e6-4b6a-a973-12bbcf1936e0"
       },
       {
+        "name": "Sticky Note",
         "parameters": {
           "content": "### Tool\n",
           "height": 560,
           "width": 1140
         },
-        "id": "a2e62839-cb3e-4381-9b86-a71afcac8173",
-        "name": "Sticky Note",
-        "type": "n8n-nodes-base.stickyNote",
         "position": [
-          416,
-          32
+          -48,
+          1136
         ],
-        "typeVersion": 1
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "id": "7841c8f9-df7f-4504-a13a-b496343b42c2"
       },
       {
+        "name": "Sticky Note1",
         "parameters": {
           "content": "### Report workflow",
           "height": 480,
           "width": 1360
         },
-        "id": "9463e9ae-9ff7-4ad5-a9cf-3438f7abd0b9",
-        "name": "Sticky Note1",
-        "type": "n8n-nodes-base.stickyNote",
         "position": [
-          -192,
-          656
+          -48,
+          1584
         ],
-        "typeVersion": 1
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "id": "a861b02a-2da6-4791-9a5d-9acebc67d4e5"
       },
       {
+        "name": "Sticky Note2",
         "parameters": {
           "content": "### Agent",
           "height": 440,
           "width": 900
         },
-        "id": "4a887e84-3249-412d-9e20-ba7eab063547",
-        "name": "Sticky Note2",
-        "type": "n8n-nodes-base.stickyNote",
         "position": [
-          -608,
-          -96
+          -16,
+          752
         ],
-        "typeVersion": 1
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "id": "03815a31-4a66-421e-ad45-f156b0491301"
       },
       {
+        "credentials": {
+          "snowflake": {
+            "id": "oi8Cr7VRLwSbn6CV",
+            "name": "Snowflake account"
+          }
+        },
+        "name": "Execute SQL",
+        "onError": "continueErrorOutput",
         "parameters": {
           "operation": "executeQuery",
           "query": "{{ $json.query }}"
         },
-        "id": "db88d102-866b-4323-8748-36f4a5d68758",
-        "name": "Execute SQL",
-        "type": "n8n-nodes-base.snowflake",
         "position": [
-          704,
-          288
+          256,
+          1440
         ],
         "retryOnFail": false,
+        "type": "n8n-nodes-base.snowflake",
         "typeVersion": 1,
-        "credentials": {
-          "snowflake": {
-            "id": "uw8Q4gcsElUug50Z",
-            "name": "Snowflake account"
-          }
-        },
-        "onError": "continueErrorOutput"
+        "id": "76b7dff9-3e94-42fc-9c05-946159d539fd"
       },
       {
+        "name": "Aggregate Data",
         "parameters": {
           "aggregate": "aggregateAllItemData",
           "options": {}
         },
-        "id": "8dc7b3ca-b424-45ce-9466-ebd9f34a1f2c",
-        "name": "Aggregate Data",
-        "type": "n8n-nodes-base.aggregate",
         "position": [
-          928,
-          192
+          480,
+          1344
         ],
-        "typeVersion": 1
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "id": "7baac261-b0fb-4591-ae7e-8ff7add504c1"
       },
       {
+        "name": "If Count>100",
         "parameters": {
           "conditions": {
-            "options": {
-              "version": 2,
-              "leftValue": "",
-              "caseSensitive": true,
-              "typeValidation": "strict"
-            },
+            "combinator": "and",
             "conditions": [
               {
                 "id": "5a485a5a-28fb-4914-8fb6-131a159db08d",
-                "operator": {
-                  "type": "array",
-                  "operation": "notEmpty",
-                  "singleValue": true
-                },
                 "leftValue": "={{ $json.data }}",
+                "operator": {
+                  "operation": "notEmpty",
+                  "singleValue": true,
+                  "type": "array"
+                },
                 "rightValue": 5
               }
             ],
-            "combinator": "and"
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            }
           },
           "options": {}
         },
-        "id": "30891918-87c6-4d65-b40d-e894be2d80c6",
-        "name": "If Count>100",
+        "position": [
+          704,
+          1344
+        ],
         "type": "n8n-nodes-base.if",
-        "position": [
-          1152,
-          192
-        ],
-        "typeVersion": 2.2
+        "typeVersion": 2.2,
+        "id": "7f186d10-7d71-4e41-9964-e720b694ec23"
       },
       {
-        "parameters": {
-          "mode": "raw",
-          "jsonOutput": "={\"output\":\"[Link to report](http://localhost:5678/webhook/data-report?sql={{ $('When Executed by Another Workflow').item.json.query.urlEncode() }})\"}",
-          "options": {}
-        },
-        "id": "735ec257-34f4-414e-953b-2e3768a55d9b",
         "name": "Link to Report",
-        "type": "n8n-nodes-base.set",
-        "position": [
-          1376,
-          96
-        ],
-        "typeVersion": 3.4
-      },
-      {
         "parameters": {
+          "jsonOutput": "={\"output\":\"[Link to report](http://localhost:5678/webhook/87893585-d157-468d-a9af-7238784e814c?sql={{ $('When Executed by Another Workflow').item.json.query.urlEncode() }})\"}",
           "mode": "raw",
-          "jsonOutput": "={{ $json }}",
           "options": {}
         },
-        "id": "8b4b4742-0ad5-4305-a562-910d6719f6c8",
-        "name": "Return Data",
-        "type": "n8n-nodes-base.set",
-        "position": [
-          1376,
-          288
-        ],
-        "typeVersion": 3.4
-      },
-      {
-        "parameters": {
-          "mode": "raw",
-          "jsonOutput": "={{ $json }}",
-          "options": {}
-        },
-        "id": "ee6b445d-89f0-4322-847f-3b1b818b9553",
-        "name": "Return Error",
-        "type": "n8n-nodes-base.set",
         "position": [
           928,
-          384
+          1248
         ],
-        "typeVersion": 3.4
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "id": "643d62de-3427-406c-a2f7-ea9a15f51f52"
       },
       {
+        "name": "Return Data",
+        "parameters": {
+          "jsonOutput": "={{ $json }}",
+          "mode": "raw",
+          "options": {}
+        },
+        "position": [
+          928,
+          1440
+        ],
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "id": "e257695c-9512-4f87-bb2b-62def98c91d2"
+      },
+      {
+        "name": "Return Error",
+        "parameters": {
+          "jsonOutput": "={{ $json }}",
+          "mode": "raw",
+          "options": {}
+        },
+        "position": [
+          480,
+          1536
+        ],
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "id": "0e801546-70f4-48cb-9f93-95c5f935063e"
+      },
+      {
+        "name": "Error page",
         "parameters": {
           "assignments": {
             "assignments": [
@@ -1066,114 +1116,116 @@
           },
           "options": {}
         },
-        "id": "3b55d319-0386-45dd-8598-89c197aa499c",
-        "name": "Error page",
-        "type": "n8n-nodes-base.set",
         "position": [
-          784,
-          976
+          928,
+          1904
         ],
-        "typeVersion": 3.4
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "id": "7e062a30-f1cc-4898-ae54-5e2e955439f1"
       },
       {
+        "name": "Sticky Note4",
         "parameters": {
-          "model": "glm-4.7:cloud",
-          "options": {}
+          "color": 5,
+          "content": "### Replace webhook address",
+          "height": 80
         },
-        "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
-        "typeVersion": 1,
         "position": [
-          -336,
-          192
+          2064,
+          816
         ],
-        "id": "056a5885-7743-4a8a-9c15-e3b0e69a165f",
-        "name": "Ollama Chat Model",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "id": "79d899db-beac-45fc-8795-5e6f6884d601"
+      },
+      {
+        "name": "Sticky Note5",
+        "parameters": {
+          "color": 5,
+          "content": "### Map this workflow",
+          "height": 80,
+          "width": 160
+        },
+        "position": [
+          304,
+          1264
+        ],
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "id": "1087bcff-22fe-4811-b72f-8ff99b4b44b8"
+      },
+      {
+        "name": "Sticky Note6",
+        "parameters": {
+          "color": 5,
+          "content": "### Replace name of schema and database",
+          "height": 80
+        },
+        "position": [
+          560,
+          1264
+        ],
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "id": "08818af9-ef1a-4c5e-84ac-1641480cdcee"
+      },
+      {
         "credentials": {
           "ollamaApi": {
-            "id": "exXKRxV15xGdnWOs",
+            "id": "Vob7VZOr0cQCHgsU",
             "name": "Ollama account"
           }
-        }
+        },
+        "name": "Ollama Chat Model",
+        "parameters": {
+          "model": "gpt-oss:120b-cloud",
+          "options": {}
+        },
+        "position": [
+          256,
+          1040
+        ],
+        "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+        "typeVersion": 1,
+        "id": "395a131f-e6f9-4f66-aa9b-fe597c3f7454"
       },
       {
-        "parameters": {
-          "descriptionType": "manual",
-          "toolDescription": "Get list of all tables in database",
-          "operation": "executeQuery",
-          "query": "SELECT table_schema, table_name\nFROM information_schema.tables\nWHERE table_schema = 'WEBAPP_AIWORKFLOW';"
-        },
-        "id": "635fa4be-948b-430e-8b12-e928464f93ed",
-        "name": "DB Schema",
-        "type": "n8n-nodes-base.snowflakeTool",
-        "position": [
-          -80,
-          192
-        ],
-        "typeVersion": 1,
         "credentials": {
           "snowflake": {
-            "id": "uw8Q4gcsElUug50Z",
+            "id": "oi8Cr7VRLwSbn6CV",
             "name": "Snowflake account"
           }
-        }
-      },
-      {
-        "parameters": {
-          "hasOutputParser": true,
-          "options": {
-            "systemMessage": "You are Snowflake SQL assistant.\n\nUse tools to retrieve data from Snowflake and answer user.\n\nIMPORTANT Always check database schema and table definition for preparing SQL query."
-          }
         },
-        "id": "7dffe7ba-d613-4562-89e2-d2581a8fe6bc",
-        "name": "AI Agent",
-        "type": "@n8n/n8n-nodes-langchain.agent",
-        "position": [
-          -144,
-          -32
-        ],
-        "typeVersion": 2
-      },
-      {
+        "name": "DB Schema",
         "parameters": {
-          "path": "data-request"
+          "descriptionType": "manual",
+          "operation": "executeQuery",
+          "query": "SELECT table_schema, table_name\nFROM information_schema.tables\nWHERE table_schema = 'WEBAPP_AIWORKFLOW';",
+          "toolDescription": "Get list of all tables in database"
         },
-        "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
-        "typeVersion": 2,
         "position": [
-          -496,
-          576
+          512,
+          1040
         ],
-        "id": "f82af678-a181-4e9d-b816-c2585218acd9",
-        "name": "MCP Server Trigger",
-        "webhookId": "1ce18517-1a33-451f-b23d-9c9e9247d7f0"
+        "type": "n8n-nodes-base.snowflakeTool",
+        "typeVersion": 1,
+        "id": "75021462-acb0-4ef2-a4da-6ec4c9209d8f"
       }
     ],
     "connections": {
-      "Webhook": {
+      "AI Agent1": {
         "main": [
-          [
-            {
-              "node": "Snowflake1",
-              "type": "main",
-              "index": 0
-            }
-          ]
+          []
         ]
       },
-      "Set HTML": {
+      "Aggregate Data": {
         "main": [
           [
             {
-              "node": "Respond to Webhook",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Error page",
-              "type": "main",
-              "index": 0
+              "index": 0,
+              "node": "If Count>100",
+              "type": "main"
             }
           ]
         ]
@@ -1182,151 +1234,9 @@
         "main": [
           [
             {
+              "index": 0,
               "node": "Set HTML",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Error page": {
-        "main": [
-          [
-            {
-              "node": "Respond to Webhook",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Snowflake1": {
-        "main": [
-          [
-            {
-              "node": "Aggregate1",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Error page",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Execute SQL": {
-        "main": [
-          [
-            {
-              "node": "Aggregate Data",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Return Error",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "If Count>100": {
-        "main": [
-          [
-            {
-              "node": "Link to Report",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Return Data",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Retrieve Data": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Simple Memory": {
-        "ai_memory": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_memory",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Aggregate Data": {
-        "main": [
-          [
-            {
-              "node": "If Count>100",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Get table definition": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "When chat message received": {
-        "main": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "When Executed by Another Workflow": {
-        "main": [
-          [
-            {
-              "node": "Execute SQL",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Ollama Chat Model": {
-        "ai_languageModel": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_languageModel",
-              "index": 0
+              "type": "main"
             }
           ]
         ]
@@ -1335,17 +1245,177 @@
         "ai_tool": [
           [
             {
-              "node": "AI Agent",
-              "type": "ai_tool",
-              "index": 0
+              "index": 0,
+              "node": "AI Agent1",
+              "type": "ai_tool"
+            }
+          ]
+        ]
+      },
+      "Error page": {
+        "main": [
+          [
+            {
+              "index": 0,
+              "node": "Respond to Webhook",
+              "type": "main"
+            }
+          ]
+        ]
+      },
+      "Execute SQL": {
+        "main": [
+          [
+            {
+              "index": 0,
+              "node": "Aggregate Data",
+              "type": "main"
+            }
+          ],
+          [
+            {
+              "index": 0,
+              "node": "Return Error",
+              "type": "main"
+            }
+          ]
+        ]
+      },
+      "Get table definition": {
+        "ai_tool": [
+          [
+            {
+              "index": 0,
+              "node": "AI Agent1",
+              "type": "ai_tool"
+            }
+          ]
+        ]
+      },
+      "If Count>100": {
+        "main": [
+          [
+            {
+              "index": 0,
+              "node": "Link to Report",
+              "type": "main"
+            }
+          ],
+          [
+            {
+              "index": 0,
+              "node": "Return Data",
+              "type": "main"
+            }
+          ]
+        ]
+      },
+      "Ollama Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "index": 0,
+              "node": "AI Agent1",
+              "type": "ai_languageModel"
+            }
+          ]
+        ]
+      },
+      "Retrieve Data": {
+        "ai_tool": [
+          [
+            {
+              "index": 0,
+              "node": "AI Agent1",
+              "type": "ai_tool"
+            }
+          ]
+        ]
+      },
+      "Set HTML": {
+        "main": [
+          [
+            {
+              "index": 0,
+              "node": "Respond to Webhook",
+              "type": "main"
+            }
+          ],
+          [
+            {
+              "index": 0,
+              "node": "Error page",
+              "type": "main"
+            }
+          ]
+        ]
+      },
+      "Simple Memory": {
+        "ai_memory": [
+          [
+            {
+              "index": 0,
+              "node": "AI Agent1",
+              "type": "ai_memory"
+            }
+          ]
+        ]
+      },
+      "Snowflake1": {
+        "main": [
+          [
+            {
+              "index": 0,
+              "node": "Aggregate1",
+              "type": "main"
+            }
+          ],
+          [
+            {
+              "index": 0,
+              "node": "Error page",
+              "type": "main"
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "index": 0,
+              "node": "Snowflake1",
+              "type": "main"
+            }
+          ]
+        ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "index": 0,
+              "node": "Execute SQL",
+              "type": "main"
+            }
+          ]
+        ]
+      },
+      "When chat message received": {
+        "main": [
+          [
+            {
+              "index": 0,
+              "node": "AI Agent1",
+              "type": "main"
             }
           ]
         ]
       }
     },
     "authors": "Shawn Crowley",
-    "name": "Version 850acdf8",
-    "description": "",
+    "name": null,
+    "description": null,
     "autosaved": false
   },
   "tags": []
