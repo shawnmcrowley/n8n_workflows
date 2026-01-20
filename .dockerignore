@@ -1,5 +1,4 @@
 # Lines starting with # are comments
-# Ignore version control artifacts
 .git
 .gitignore
 .svn
