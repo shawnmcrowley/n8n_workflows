@@ -1,0 +1,33 @@
+# Lines starting with # are comments
+# Ignore version control artifacts
+.git
+.gitignore
+.svn
+
+# Ignore build output directories and temporary files
+**/bin
+**/obj
+**/target
+**/build
+**/dist
+**/pkg
+*.log
+npm-debug.log*
+
+# Ignore environment specific or sensitive files
+.env
+.venv
+**/venv
+.vscode
+.idea
+.aws
+.ssh
+config.json
+
+# Ignore dependency directories for some ecosystems (these are often installed *inside* the container instead)
+node_modules
+jspm_packages
+
+# Ignore operating system specific files
+.DS_Store
+Thumbs.db
