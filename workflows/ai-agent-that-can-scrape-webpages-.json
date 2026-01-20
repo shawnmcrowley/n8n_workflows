@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-30T20:43:19.952Z",
+  "updatedAt": "2026-01-17T18:18:54.392Z",
   "createdAt": "2025-12-17T18:25:03.131Z",
   "id": "H5uttGvulP9d9NEz",
   "name": "AI agent that can scrape webpages",
@@ -7,93 +7,100 @@
   "isArchived": false,
   "nodes": [
     {
+      "name": "Sticky Note",
       "parameters": {
         "content": "### Convert the query string into JSON, apply the limit for a page length",
         "height": 236,
         "width": 616
       },
-      "id": "02072c77-9eee-43bc-a046-bdc31bf1bc51",
-      "name": "Sticky Note",
-      "type": "n8n-nodes-base.stickyNote",
       "position": [
         368,
         848
       ],
-      "typeVersion": 1
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "id": "dd593705-5564-4b16-97e7-f11bd52c5599"
     },
     {
+      "name": "Sticky Note1",
       "parameters": {
         "content": "## Send an error message:\n1. If query param was incorrect, return the instruction. AI Agent should pick up on this and adapt the query on the next iteration.\n2. If the query is OK and an error was during the HTTP Request, then send back the original error message.",
         "height": 285.7,
         "width": 491
       },
-      "id": "31e7582c-9289-4bd3-b89d-c3d866754313",
-      "name": "Sticky Note1",
-      "type": "n8n-nodes-base.stickyNote",
       "position": [
         1440,
         544
       ],
-      "typeVersion": 1
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "id": "ddcd0cdf-95b1-49c1-a0db-1afc221e1b26"
     },
     {
+      "name": "Sticky Note2",
       "parameters": {
         "content": "## Post-processing of the HTML page:\n1. Keep only <BODY> content\n2. Remove inline <SCRIPT> tag entirely, as well as: NOSCRIPT, IFRAME, OBJECT, EMBED, VIDEO, AUDIO, SVG, and HTML comments.\n3. In case query parameter method=simplified, replace all page URLs (a href) and IMG (src) with NOURL / NOIMG - this may save up to 20% of the page length\n4. Convert the remaining HTML to Markdown. This step further reduces the length of the page: long HTML tags and styles are eliminated, but the markdown syntax keeps some page structure. This gives much better results compared to just a blank text.\n5. Finally, check the page length. If it's too long, send an \"ERROR: PAGE CONTENT TOO LONG\" instead of the actual page. Of course, you could split the page content in chunks, but sometimes long pages just don't have a needed content, so it makes little sense to burn tokens on them.",
         "height": 493,
         "width": 1200
       },
-      "id": "0f3ec3c8-076a-4f22-a9ab-4623494914ff",
-      "name": "Sticky Note2",
-      "type": "n8n-nodes-base.stickyNote",
       "position": [
         1440,
         864
       ],
-      "typeVersion": 1
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "id": "fd059c37-9d4c-4e41-9a04-d140b26029fb"
     },
     {
+      "name": "Sticky Note3",
       "parameters": {
         "content": "## Example ReAct AI Agent\n1. Agent Prompt is default\n2. Check the description of the HTTP_Request_Tool, it guides the agent to provide a query string with several parameters instead of a JSON object",
         "height": 503,
         "width": 617
       },
-      "id": "139733cc-7954-459e-9b55-15a3bde4d8b7",
-      "name": "Sticky Note3",
-      "type": "n8n-nodes-base.stickyNote",
       "position": [
         368,
         240
       ],
-      "typeVersion": 1
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "id": "d2f39e1c-22d7-4a9b-93de-7823fe96cddf"
     },
     {
+      "name": "When chat message received",
       "parameters": {
         "options": {}
       },
-      "id": "2b5ee7e4-061d-4a17-8581-54e02086a49a",
-      "name": "When chat message received",
-      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "position": [
         416,
         400
       ],
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
       "webhookId": "e0a11ea2-9dd7-496a-8078-1a96f05fc04b",
-      "typeVersion": 1.1
+      "id": "69d8179c-5b1b-46fa-a940-cfb84ca89bac"
     },
     {
+      "name": "AI Agent",
       "parameters": {
         "options": {}
       },
-      "id": "adc5e4d7-bccf-4ee7-9464-5cbb7b1409ba",
-      "name": "AI Agent",
-      "type": "@n8n/n8n-nodes-langchain.agent",
       "position": [
         640,
         400
       ],
-      "typeVersion": 1.8
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "id": "ca4b7bf1-bf1f-46d8-a914-8dcc849c6936"
     },
     {
+      "credentials": {
+        "openAiApi": {
+          "id": "767axIrNbLPXMZhU",
+          "name": "Snowflake Cortex AI"
+        }
+      },
+      "name": "OpenAI Chat Model1",
       "parameters": {
         "model": {
           "__rl": true,
@@ -102,35 +109,29 @@
         },
         "options": {}
       },
-      "id": "10ccad7d-2c83-4fd9-beb9-a99e1c034947",
-      "name": "OpenAI Chat Model1",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "position": [
         640,
         608
       ],
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
-      "credentials": {
-        "openAiApi": {
-          "id": "767axIrNbLPXMZhU",
-          "name": "Snowflake Cortex AI"
-        }
-      }
+      "id": "19a33f36-bde5-4f96-8493-ad81428d2a9c"
     },
     {
+      "name": "When Executed by Another Workflow",
       "parameters": {
         "inputSource": "passthrough"
       },
-      "id": "5d582c5f-35d3-4cdb-96ad-fa750be0b889",
-      "name": "When Executed by Another Workflow",
-      "type": "n8n-nodes-base.executeWorkflowTrigger",
       "position": [
         448,
         912
       ],
-      "typeVersion": 1.1
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "id": "ebea9335-4cdd-4555-86fd-a27b1b8e528e"
     },
     {
+      "name": "QUERY_PARAMS",
       "parameters": {
         "assignments": {
           "assignments": [
@@ -144,16 +145,16 @@
         },
         "options": {}
       },
-      "id": "1f073e7d-2cdd-426e-8d05-287fdf20f564",
-      "name": "QUERY_PARAMS",
-      "type": "n8n-nodes-base.set",
       "position": [
         640,
         912
       ],
-      "typeVersion": 3.4
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "id": "fb2e62c0-76b1-41fd-8982-142d1d8aafbe"
     },
     {
+      "name": "CONFIG",
       "parameters": {
         "assignments": {
           "assignments": [
@@ -167,18 +168,17 @@
         },
         "options": {}
       },
-      "id": "e9f627af-e935-478e-a2b1-b50ea57d14b1",
-      "name": "CONFIG",
-      "type": "n8n-nodes-base.set",
       "position": [
         816,
         912
       ],
-      "typeVersion": 3.4
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "id": "5cab8c73-1da0-46de-9211-df9d5a72249d"
     },
     {
+      "name": "HTTP Request",
       "parameters": {
-        "url": "={{ encodeURI($json.query.url) }}",
         "options": {
           "allowUnauthorizedCerts": true,
           "response": {
@@ -186,52 +186,53 @@
               "neverError": true
             }
           }
-        }
+        },
+        "url": "={{ encodeURI($json.query.url) }}"
       },
-      "id": "0309fb92-6785-4e38-aaeb-05ee4b6a64e2",
-      "name": "HTTP Request",
-      "type": "n8n-nodes-base.httpRequest",
       "position": [
         1056,
         912
       ],
-      "typeVersion": 4.2
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "id": "c6d948d8-46fd-40e6-925b-2cfe685b2cdb"
     },
     {
+      "name": "Is error?",
       "parameters": {
         "conditions": {
-          "options": {
-            "version": 2,
-            "leftValue": "",
-            "caseSensitive": true,
-            "typeValidation": "strict"
-          },
           "combinator": "and",
           "conditions": [
             {
               "id": "33937446-5010-47d2-b98f-2f0ceae3fbf5",
-              "operator": {
-                "type": "boolean",
-                "operation": "true",
-                "singleValue": true
-              },
               "leftValue": "={{ $json.hasOwnProperty('error') }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
               "rightValue": ""
             }
-          ]
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          }
         },
         "options": {}
       },
-      "id": "9c8b9856-a403-405c-afd4-9e9fecaa5913",
-      "name": "Is error?",
-      "type": "n8n-nodes-base.if",
       "position": [
         1232,
         912
       ],
-      "typeVersion": 2.2
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "id": "538cbb88-b92f-4de5-a4ce-b581a92fd943"
     },
     {
+      "name": "Stringify error message",
       "parameters": {
         "assignments": {
           "assignments": [
@@ -243,21 +244,21 @@
             }
           ]
         },
-        "includeOtherFields": true,
         "include": "selected",
         "includeFields": "HTML",
+        "includeOtherFields": true,
         "options": {}
       },
-      "id": "d7275d78-2c59-4b8f-bb8e-481f73827fd5",
-      "name": "Stringify error message",
-      "type": "n8n-nodes-base.set",
       "position": [
         1488,
         688
       ],
-      "typeVersion": 3.4
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "id": "ec8159da-5e51-4ccc-84db-c5a05eac825e"
     },
     {
+      "name": "Exctract HTML Body",
       "parameters": {
         "assignments": {
           "assignments": [
@@ -269,21 +270,21 @@
             }
           ]
         },
-        "includeOtherFields": true,
         "include": "selected",
         "includeFields": "HTML",
+        "includeOtherFields": true,
         "options": {}
       },
-      "id": "f7ca9e36-5edb-4573-a258-150c5bdcc644",
-      "name": "Exctract HTML Body",
-      "type": "n8n-nodes-base.set",
       "position": [
         1520,
         1184
       ],
-      "typeVersion": 3.4
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "id": "a0c6eed0-4fad-4326-963c-1e4ca7629cef"
     },
     {
+      "name": "Remove extra tags",
       "parameters": {
         "assignments": {
           "assignments": [
@@ -297,49 +298,49 @@
         },
         "options": {}
       },
-      "id": "9fef995b-d8ab-4d01-b2fb-01a605062fd1",
-      "name": "Remove extra tags",
-      "type": "n8n-nodes-base.set",
       "position": [
         1696,
         1184
       ],
-      "typeVersion": 3.4
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "id": "cc604978-a8c3-4d4e-847b-c0b5fb5d54f2"
     },
     {
+      "name": "Simplify?",
       "parameters": {
         "conditions": {
-          "options": {
-            "version": 2,
-            "leftValue": "",
-            "caseSensitive": true,
-            "typeValidation": "strict"
-          },
           "combinator": "and",
           "conditions": [
             {
               "id": "9c3a2a78-b236-4f47-89b0-34967965e01c",
-              "operator": {
-                "type": "string",
-                "operation": "contains"
-              },
               "leftValue": "={{ $('CONFIG').first()?.json?.query?.method }}",
+              "operator": {
+                "operation": "contains",
+                "type": "string"
+              },
               "rightValue": "simplify"
             }
-          ]
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          }
         },
         "options": {}
       },
-      "id": "4897d31a-6425-4838-b934-95b1451cae61",
-      "name": "Simplify?",
-      "type": "n8n-nodes-base.if",
       "position": [
         1872,
         1184
       ],
-      "typeVersion": 2.2
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "id": "223f7e31-9c1c-4710-8abd-009bc75ac8c4"
     },
     {
+      "name": "Simplify output",
       "parameters": {
         "assignments": {
           "assignments": [
@@ -353,31 +354,31 @@
         },
         "options": {}
       },
-      "id": "997c724c-ea8f-4536-a389-ac8429d57448",
-      "name": "Simplify output",
-      "type": "n8n-nodes-base.set",
       "position": [
         2048,
         1088
       ],
-      "typeVersion": 3.4
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "id": "eecd9179-9b1e-464a-8eb3-048ba92dc4bb"
     },
     {
+      "name": "Convert to Markdown",
       "parameters": {
-        "html": "={{ $json.HTML }}",
         "destinationKey": "page_content",
+        "html": "={{ $json.HTML }}",
         "options": {}
       },
-      "id": "440a8076-3901-42e2-a36a-bc47ff588dd4",
-      "name": "Convert to Markdown",
-      "type": "n8n-nodes-base.markdown",
       "position": [
         2240,
         1184
       ],
-      "typeVersion": 1
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "id": "08313101-005a-4abe-b973-e006ecf40c1d"
     },
     {
+      "name": "Send Page Content",
       "parameters": {
         "assignments": {
           "assignments": [
@@ -397,42 +398,41 @@
         },
         "options": {}
       },
-      "id": "a2fbeb5e-3e82-4777-bb61-3e475ffe2fc8",
-      "name": "Send Page Content",
-      "type": "n8n-nodes-base.set",
       "position": [
         2432,
         1184
       ],
-      "typeVersion": 3.4
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "id": "f73394d3-05b1-43fc-b487-64e7def04b63"
     },
     {
+      "name": "HTTP_Request_Tool",
       "parameters": {
-        "name": "HTTP_Request_Tool",
         "description": "Call this tool to fetch a webpage content. The input should be a stringified HTTP query parameter like this: \"?url=VALIDURL&method=SELECTEDMETHOD\". \"url\" parameter should contain the valid URL string. \"method\" key can be either \"full\" or \"simplified\". method=full will fetch the whole webpage content in the Markdown format, including page links and image links. method=simplified will return the Markdown content of the page but remove urls and image links from the page content for simplicity. Before calling this tool, think strategically which \"method\" to call. Best of all to use method=simplified. However, if you anticipate that the page request is not final or if you need to extract links from the page, pick method=full.",
+        "name": "HTTP_Request_Tool",
         "workflowId": {
           "__rl": true,
+          "cachedResultName": "AI agent that can scrape webpages",
           "mode": "list",
-          "value": "H5uttGvulP9d9NEz",
-          "cachedResultName": "AI agent that can scrape webpages"
+          "value": "H5uttGvulP9d9NEz"
         },
         "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false,
           "mappingMode": "defineBelow",
-          "value": {},
           "matchingColumns": [],
           "schema": [],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
+          "value": {}
         }
       },
-      "id": "d367adfd-efd8-49e3-bed3-d65f23a60a9a",
-      "name": "HTTP_Request_Tool",
-      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "position": [
         816,
         608
       ],
-      "typeVersion": 2
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "id": "ecfd7cb5-41f1-41ae-ab9f-30f2dae402cc"
     }
   ],
   "connections": {
@@ -440,122 +440,9 @@
       "main": [
         [
           {
+            "index": 0,
             "node": "HTTP Request",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Is error?": {
-      "main": [
-        [
-          {
-            "node": "Stringify error message",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Exctract HTML Body",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Simplify?": {
-      "main": [
-        [
-          {
-            "node": "Simplify output",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Convert to Markdown",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request": {
-      "main": [
-        [
-          {
-            "node": "Is error?",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "QUERY_PARAMS": {
-      "main": [
-        [
-          {
-            "node": "CONFIG",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Simplify output": {
-      "main": [
-        [
-          {
-            "node": "Convert to Markdown",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP_Request_Tool": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Remove extra tags": {
-      "main": [
-        [
-          {
-            "node": "Simplify?",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Exctract HTML Body": {
-      "main": [
-        [
-          {
-            "node": "Remove extra tags",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model1": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
-            "index": 0
+            "type": "main"
           }
         ]
       ]
@@ -564,20 +451,122 @@
       "main": [
         [
           {
+            "index": 0,
             "node": "Send Page Content",
-            "type": "main",
-            "index": 0
+            "type": "main"
           }
         ]
       ]
     },
-    "When chat message received": {
+    "Exctract HTML Body": {
       "main": [
         [
           {
+            "index": 0,
+            "node": "Remove extra tags",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "Is error?",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "HTTP_Request_Tool": {
+      "ai_tool": [
+        [
+          {
+            "index": 0,
             "node": "AI Agent",
-            "type": "main",
-            "index": 0
+            "type": "ai_tool"
+          }
+        ]
+      ]
+    },
+    "Is error?": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "Stringify error message",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "Exctract HTML Body",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "index": 0,
+            "node": "AI Agent",
+            "type": "ai_languageModel"
+          }
+        ]
+      ]
+    },
+    "QUERY_PARAMS": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CONFIG",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "Remove extra tags": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "Simplify?",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "Simplify output": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "Convert to Markdown",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "Simplify?": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "Simplify output",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "Convert to Markdown",
+            "type": "main"
           }
         ]
       ]
@@ -586,16 +575,29 @@
       "main": [
         [
           {
+            "index": 0,
             "node": "QUERY_PARAMS",
-            "type": "main",
-            "index": 0
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "AI Agent",
+            "type": "main"
           }
         ]
       ]
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
   },
   "staticData": null,
   "meta": {
@@ -603,7 +605,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "40c5aaa9-01f4-4674-a928-39e59c57a73b",
+  "versionId": "5574ec49-08fe-4e64-84da-982154fc859e",
   "activeVersionId": null,
   "triggerCount": 0,
   "shared": [
