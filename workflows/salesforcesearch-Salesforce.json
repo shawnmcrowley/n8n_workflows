@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-23T21:13:42.879Z",
+  "updatedAt": "2026-01-28T23:41:21.668Z",
   "createdAt": "2026-01-20T22:53:37.007Z",
   "id": "QhwIp9jKRey_vw_zj2FmB",
   "name": "salesForceSearch",
@@ -30,18 +30,40 @@
     {
       "parameters": {
         "descriptionType": "manual",
-        "toolDescription": "Perform a query in Salesforce",
+        "toolDescription": "Tool Name: customerAccountSalesforceByCountry\nDescription: \"Searches the Salesforce database for records matching a specific country. Use this tool to find a customers and account details.  Requires query (string) as input. Returns a list of matching customers  and account details including Name, ID, Email, Address, and Country\"\n\nAcceptable Query Values:\n\n-United States of America\n-Mexico",
         "resource": "search",
-        "query": "=SELECT Id, Name, BillingCountry FROM Account WHERE BillingCountry IN ('{{ $fromAI('country_name') }}')"
+        "query": "=SELECT Id, Name, BillingCountry, \n                   (SELECT Id, FirstName, LastName, Email FROM Contacts)\n            FROM Account\n            WHERE BillingCountry='{{$fromAI(\"Query\", \"\", \"string\")}}'"
       },
       "type": "n8n-nodes-base.salesforceTool",
       "typeVersion": 1,
       "position": [
-        96,
+        -64,
         208
       ],
       "id": "eff81732-9433-4258-b2fa-b3f5dbf49544",
-      "name": "querySalesforce",
+      "name": "customerAccountSalesforceByCountry",
+      "credentials": {
+        "salesforceOAuth2Api": {
+          "id": "El72ffp0tQmH4E3g",
+          "name": "Salesforce account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Tool Name: leadsByCustomerandCountry\nDescription: \"Searches the Salesforce database for records matching a specific country. Use this tool to find a customers and account details.  Requires query (string) as input. Returns a list of matching customers  and account details including Name, ID, Email, Address, and Country\"\n\nAcceptable Query Values:\n\n- Country\n- CustomerNaame",
+        "resource": "search",
+        "query": "=SELECT Id, Name, Company, Country, Email \n    FROM Lead \n    WHERE Country = 'United States of America' \n    AND Company = '{{ $fromAI(\"Query\",\"\", \"string\") }}'"
+      },
+      "type": "n8n-nodes-base.salesforceTool",
+      "typeVersion": 1,
+      "position": [
+        336,
+        192
+      ],
+      "id": "8712a676-8cb7-4a98-ae38-c58a3aaaf788",
+      "name": "leadsByCustomerandCountry",
       "credentials": {
         "salesforceOAuth2Api": {
           "id": "El72ffp0tQmH4E3g",
@@ -51,7 +73,18 @@
     }
   ],
   "connections": {
-    "querySalesforce": {
+    "customerAccountSalesforceByCountry": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "leadsByCustomerandCountry": {
       "ai_tool": [
         [
           {
@@ -75,8 +108,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "c4c8c778-d504-444a-bc70-9028faf12570",
-  "activeVersionId": "c4c8c778-d504-444a-bc70-9028faf12570",
+  "versionId": "a98e2862-a415-4c57-a078-5d4d8e786afe",
+  "activeVersionId": "a98e2862-a415-4c57-a078-5d4d8e786afe",
   "triggerCount": 1,
   "shared": [
     {
@@ -88,9 +121,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-01-23T20:46:25.207Z",
-    "createdAt": "2026-01-23T20:46:18.751Z",
-    "versionId": "c4c8c778-d504-444a-bc70-9028faf12570",
+    "updatedAt": "2026-01-28T23:41:31.040Z",
+    "createdAt": "2026-01-28T23:41:21.670Z",
+    "versionId": "a98e2862-a415-4c57-a078-5d4d8e786afe",
     "workflowId": "QhwIp9jKRey_vw_zj2FmB",
     "nodes": [
       {
@@ -117,18 +150,40 @@
       {
         "parameters": {
           "descriptionType": "manual",
-          "toolDescription": "Perform a query in Salesforce",
+          "toolDescription": "Tool Name: customerAccountSalesforceByCountry\nDescription: \"Searches the Salesforce database for records matching a specific country. Use this tool to find a customers and account details.  Requires query (string) as input. Returns a list of matching customers  and account details including Name, ID, Email, Address, and Country\"\n\nAcceptable Query Values:\n\n-United States of America\n-Mexico",
           "resource": "search",
-          "query": "=SELECT Id, Name, BillingCountry FROM Account WHERE BillingCountry IN ('{{ $fromAI('country_name') }}')"
+          "query": "=SELECT Id, Name, BillingCountry, \n                   (SELECT Id, FirstName, LastName, Email FROM Contacts)\n            FROM Account\n            WHERE BillingCountry='{{$fromAI(\"Query\", \"\", \"string\")}}'"
         },
         "type": "n8n-nodes-base.salesforceTool",
         "typeVersion": 1,
         "position": [
-          96,
+          -64,
           208
         ],
         "id": "eff81732-9433-4258-b2fa-b3f5dbf49544",
-        "name": "querySalesforce",
+        "name": "customerAccountSalesforceByCountry",
+        "credentials": {
+          "salesforceOAuth2Api": {
+            "id": "El72ffp0tQmH4E3g",
+            "name": "Salesforce account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Tool Name: leadsByCustomerandCountry\nDescription: \"Searches the Salesforce database for records matching a specific country. Use this tool to find a customers and account details.  Requires query (string) as input. Returns a list of matching customers  and account details including Name, ID, Email, Address, and Country\"\n\nAcceptable Query Values:\n\n- Country\n- CustomerNaame",
+          "resource": "search",
+          "query": "=SELECT Id, Name, Company, Country, Email \n    FROM Lead \n    WHERE Country = 'United States of America' \n    AND Company = '{{ $fromAI(\"Query\",\"\", \"string\") }}'"
+        },
+        "type": "n8n-nodes-base.salesforceTool",
+        "typeVersion": 1,
+        "position": [
+          336,
+          192
+        ],
+        "id": "8712a676-8cb7-4a98-ae38-c58a3aaaf788",
+        "name": "leadsByCustomerandCountry",
         "credentials": {
           "salesforceOAuth2Api": {
             "id": "El72ffp0tQmH4E3g",
@@ -138,7 +193,18 @@
       }
     ],
     "connections": {
-      "querySalesforce": {
+      "customerAccountSalesforceByCountry": {
+        "ai_tool": [
+          [
+            {
+              "node": "MCP Server Trigger",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "leadsByCustomerandCountry": {
         "ai_tool": [
           [
             {
@@ -151,7 +217,7 @@
       }
     },
     "authors": "Shawn Crowley",
-    "name": "v1",
+    "name": "v1.1",
     "description": "",
     "autosaved": false
   },
