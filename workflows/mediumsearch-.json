@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-01-23T00:08:15.460Z",
+  "updatedAt": "2026-01-28T22:35:11.707Z",
   "createdAt": "2026-01-23T00:08:15.460Z",
   "id": "9G2UaUg2NW18tX1e7maIj",
   "name": "mediumSearch",
   "active": false,
-  "isArchived": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -54,7 +54,7 @@
   "staticData": null,
   "meta": null,
   "pinData": {},
-  "versionId": "15bec08e-501e-4516-ab79-cd30be2d3f9e",
+  "versionId": "8f97756f-8a19-4e75-bb8e-84a1a583feb9",
   "activeVersionId": null,
   "triggerCount": 0,
   "shared": [
