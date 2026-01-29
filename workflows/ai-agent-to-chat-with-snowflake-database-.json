@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-17T18:19:31.265Z",
+  "updatedAt": "2026-01-26T22:12:23.328Z",
   "createdAt": "2025-12-15T19:34:19.460Z",
   "id": "VrreoHxSO7d0UAO2",
   "name": "AI Agent to chat with Snowflake database",
@@ -7,10 +7,10 @@
   "isArchived": false,
   "nodes": [
     {
-      "name": "When chat message received",
       "parameters": {
         "options": {}
       },
+      "name": "When chat message received",
       "position": [
         32,
         928
@@ -21,13 +21,13 @@
       "id": "a5b8617e-563f-446a-8e1d-bce121f245f4"
     },
     {
-      "name": "AI Agent1",
       "parameters": {
         "hasOutputParser": true,
         "options": {
           "systemMessage": "You are Snowflake SQL assistant.\n\nUse tools to retrieve data from Snowflake and answer user.\n\nIMPORTANT Always check database schema and table definition for preparing SQL query."
         }
       },
+      "name": "AI Agent1",
       "position": [
         448,
         816
@@ -37,11 +37,11 @@
       "id": "1b69e537-ee28-45f3-8323-6dff48cc70aa"
     },
     {
-      "name": "Simple Memory",
       "parameters": {
         "sessionIdType": "customKey",
         "sessionKey": "={{ $('When chat message received').item.json.sessionId }}"
       },
+      "name": "Simple Memory",
       "position": [
         384,
         1040
@@ -51,34 +51,34 @@
       "id": "4cc7e324-7f98-49af-896e-8230ff08b6bc"
     },
     {
-      "credentials": {
-        "snowflake": {
-          "id": "oi8Cr7VRLwSbn6CV",
-          "name": "Snowflake account"
-        }
-      },
-      "name": "Get table definition",
       "parameters": {
         "descriptionType": "manual",
+        "toolDescription": "Get table definition to find all columns and types.",
         "operation": "executeQuery",
-        "query": "SELECT \n    column_name,\n    data_type\n\nFROM \n    WEB_APPLICATIONS.information_schema.columns\nWHERE \n    table_name = '{{ $fromAI(\"table_name\") }}'\n    AND table_schema = 'WEBAPP_AIWORKFLOW'\nORDER BY \n    ordinal_position;\n",
-        "toolDescription": "Get table definition to find all columns and types."
+        "query": "SELECT \n    column_name,\n    data_type\n\nFROM \n    WEB_APPLICATIONS.information_schema.columns\nWHERE \n    table_name = '{{ $fromAI(\"table_name\") }}'\n    AND table_schema = 'WEBAPP_AIWORKFLOW'\nORDER BY \n    ordinal_position;\n"
       },
+      "name": "Get table definition",
       "position": [
         768,
         1040
       ],
       "type": "n8n-nodes-base.snowflakeTool",
       "typeVersion": 1,
-      "id": "4777ceb7-0d5d-4f61-9767-bdb76dd30586"
+      "id": "4777ceb7-0d5d-4f61-9767-bdb76dd30586",
+      "credentials": {
+        "snowflake": {
+          "id": "oi8Cr7VRLwSbn6CV",
+          "name": "Snowflake account"
+        }
+      }
     },
     {
-      "name": "Webhook",
       "parameters": {
-        "options": {},
-        "path": "87893585-d157-468d-a9af-7238784e814c",
-        "responseMode": "responseNode"
+        "path": "getReport",
+        "responseMode": "responseNode",
+        "options": {}
       },
+      "name": "Webhook",
       "position": [
         32,
         1840
@@ -89,8 +89,6 @@
       "id": "d6b98488-a877-4afe-b4cc-295abf0c4d83"
     },
     {
-      "name": "Set HTML",
-      "onError": "continueErrorOutput",
       "parameters": {
         "assignments": {
           "assignments": [
@@ -104,21 +102,23 @@
         },
         "options": {}
       },
+      "name": "Set HTML",
       "position": [
         704,
         1760
       ],
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "id": "c2e8aad8-c0bf-4811-b40d-d695a8745673"
+      "id": "c2e8aad8-c0bf-4811-b40d-d695a8745673",
+      "onError": "continueErrorOutput"
     },
     {
-      "name": "Respond to Webhook",
       "parameters": {
-        "options": {},
         "respondWith": "text",
-        "responseBody": "={{ $json.html }}"
+        "responseBody": "={{ $json.html }}",
+        "options": {}
       },
+      "name": "Respond to Webhook",
       "position": [
         1152,
         1840
@@ -128,18 +128,11 @@
       "id": "838225b5-06ef-42ef-8e82-84baaf9af631"
     },
     {
-      "credentials": {
-        "snowflake": {
-          "id": "oi8Cr7VRLwSbn6CV",
-          "name": "Snowflake account"
-        }
-      },
-      "name": "Snowflake1",
-      "onError": "continueErrorOutput",
       "parameters": {
         "operation": "executeQuery",
         "query": "{{ $json.query.sql }}"
       },
+      "name": "Snowflake1",
       "position": [
         256,
         1840
@@ -147,14 +140,21 @@
       "retryOnFail": false,
       "type": "n8n-nodes-base.snowflake",
       "typeVersion": 1,
-      "id": "c174c286-663c-4a24-ab70-b969d3e00af0"
+      "id": "c174c286-663c-4a24-ab70-b969d3e00af0",
+      "credentials": {
+        "snowflake": {
+          "id": "oi8Cr7VRLwSbn6CV",
+          "name": "Snowflake account"
+        }
+      },
+      "onError": "continueErrorOutput"
     },
     {
-      "name": "Aggregate1",
       "parameters": {
         "aggregate": "aggregateAllItemData",
         "options": {}
       },
+      "name": "Aggregate1",
       "position": [
         480,
         1760
@@ -164,7 +164,6 @@
       "id": "89f7ccf6-c130-4d7f-a41c-babc5581a120"
     },
     {
-      "name": "When Executed by Another Workflow",
       "parameters": {
         "workflowInputs": {
           "values": [
@@ -174,6 +173,7 @@
           ]
         }
       },
+      "name": "When Executed by Another Workflow",
       "position": [
         32,
         1440
@@ -183,7 +183,6 @@
       "id": "d9ea31f1-8a38-4b18-9c44-a7539b69150b"
     },
     {
-      "name": "Retrieve Data",
       "parameters": {
         "description": "Generate custom SQL queries using knowledge about DB schema and table definitions to provide needed response for user request.\nUse ->> operator to extract JSON data.\n\nSupported functions for big data analysis:\n• GROUP BY – for grouping data\n• SUM() – for summing values\n• AVG() – for calculating averages\n• COUNT() – for counting records\n• MIN() – for finding the minimum value\n• MAX() – for finding the maximum value\n• MEDIAN() – for median calculation\n• STDDEV() – for standard deviation\n• VARIANCE() – for variance calculation\n• PERCENTILE_CONT() – for percentile calculations\n• MODE() – for most frequent value\n• TREND() – for trend analysis over time\n• WINDOW FUNCTIONS – for advanced analytics (e.g., ROW_NUMBER(), RANK(), PARTITION BY)\n\nQuery example:\nSELECT * FROM FILES",
         "workflowId": {
@@ -215,6 +214,7 @@
           }
         }
       },
+      "name": "Retrieve Data",
       "position": [
         640,
         1040
@@ -224,12 +224,12 @@
       "id": "2dc3a12d-30e6-4b6a-a973-12bbcf1936e0"
     },
     {
-      "name": "Sticky Note",
       "parameters": {
         "content": "### Tool\n",
         "height": 560,
         "width": 1140
       },
+      "name": "Sticky Note",
       "position": [
         -48,
         1136
@@ -239,12 +239,12 @@
       "id": "7841c8f9-df7f-4504-a13a-b496343b42c2"
     },
     {
-      "name": "Sticky Note1",
       "parameters": {
         "content": "### Report workflow",
         "height": 480,
         "width": 1360
       },
+      "name": "Sticky Note1",
       "position": [
         -48,
         1584
@@ -254,12 +254,12 @@
       "id": "a861b02a-2da6-4791-9a5d-9acebc67d4e5"
     },
     {
-      "name": "Sticky Note2",
       "parameters": {
         "content": "### Agent",
         "height": 440,
         "width": 900
       },
+      "name": "Sticky Note2",
       "position": [
         -16,
         752
@@ -269,18 +269,11 @@
       "id": "03815a31-4a66-421e-ad45-f156b0491301"
     },
     {
-      "credentials": {
-        "snowflake": {
-          "id": "oi8Cr7VRLwSbn6CV",
-          "name": "Snowflake account"
-        }
-      },
-      "name": "Execute SQL",
-      "onError": "continueErrorOutput",
       "parameters": {
         "operation": "executeQuery",
         "query": "{{ $json.query }}"
       },
+      "name": "Execute SQL",
       "position": [
         256,
         1440
@@ -288,14 +281,21 @@
       "retryOnFail": false,
       "type": "n8n-nodes-base.snowflake",
       "typeVersion": 1,
-      "id": "76b7dff9-3e94-42fc-9c05-946159d539fd"
+      "id": "76b7dff9-3e94-42fc-9c05-946159d539fd",
+      "credentials": {
+        "snowflake": {
+          "id": "oi8Cr7VRLwSbn6CV",
+          "name": "Snowflake account"
+        }
+      },
+      "onError": "continueErrorOutput"
     },
     {
-      "name": "Aggregate Data",
       "parameters": {
         "aggregate": "aggregateAllItemData",
         "options": {}
       },
+      "name": "Aggregate Data",
       "position": [
         480,
         1344
@@ -305,7 +305,6 @@
       "id": "7baac261-b0fb-4591-ae7e-8ff7add504c1"
     },
     {
-      "name": "If Count>100",
       "parameters": {
         "conditions": {
           "combinator": "and",
@@ -330,6 +329,7 @@
         },
         "options": {}
       },
+      "name": "If Count>100",
       "position": [
         704,
         1344
@@ -339,12 +339,12 @@
       "id": "7f186d10-7d71-4e41-9964-e720b694ec23"
     },
     {
-      "name": "Link to Report",
       "parameters": {
-        "jsonOutput": "={\"output\":\"[Link to report](http://localhost:5678/webhook/87893585-d157-468d-a9af-7238784e814c?sql={{ $('When Executed by Another Workflow').item.json.query.urlEncode() }})\"}",
         "mode": "raw",
+        "jsonOutput": "={\"output\":\"[Link to report](http://localhost:5678/webhook/getReport?sql={{ $('When Executed by Another Workflow').item.json.query.urlEncode() }})\"}",
         "options": {}
       },
+      "name": "Link to Report",
       "position": [
         928,
         1248
@@ -354,12 +354,12 @@
       "id": "643d62de-3427-406c-a2f7-ea9a15f51f52"
     },
     {
-      "name": "Return Data",
       "parameters": {
-        "jsonOutput": "={{ $json }}",
         "mode": "raw",
+        "jsonOutput": "={{ $json }}",
         "options": {}
       },
+      "name": "Return Data",
       "position": [
         928,
         1440
@@ -369,12 +369,12 @@
       "id": "e257695c-9512-4f87-bb2b-62def98c91d2"
     },
     {
-      "name": "Return Error",
       "parameters": {
-        "jsonOutput": "={{ $json }}",
         "mode": "raw",
+        "jsonOutput": "={{ $json }}",
         "options": {}
       },
+      "name": "Return Error",
       "position": [
         480,
         1536
@@ -384,7 +384,6 @@
       "id": "0e801546-70f4-48cb-9f93-95c5f935063e"
     },
     {
-      "name": "Error page",
       "parameters": {
         "assignments": {
           "assignments": [
@@ -398,6 +397,7 @@
         },
         "options": {}
       },
+      "name": "Error page",
       "position": [
         928,
         1904
@@ -407,28 +407,13 @@
       "id": "7e062a30-f1cc-4898-ae54-5e2e955439f1"
     },
     {
-      "name": "Sticky Note4",
       "parameters": {
-        "color": 5,
-        "content": "### Replace webhook address",
-        "height": 80
-      },
-      "position": [
-        2064,
-        816
-      ],
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "id": "79d899db-beac-45fc-8795-5e6f6884d601"
-    },
-    {
-      "name": "Sticky Note5",
-      "parameters": {
-        "color": 5,
         "content": "### Map this workflow",
         "height": 80,
-        "width": 160
+        "width": 160,
+        "color": 5
       },
+      "name": "Sticky Note5",
       "position": [
         304,
         1264
@@ -438,12 +423,12 @@
       "id": "1087bcff-22fe-4811-b72f-8ff99b4b44b8"
     },
     {
-      "name": "Sticky Note6",
       "parameters": {
-        "color": 5,
         "content": "### Replace name of schema and database",
-        "height": 80
+        "height": 80,
+        "color": 5
       },
+      "name": "Sticky Note6",
       "position": [
         560,
         1264
@@ -453,46 +438,46 @@
       "id": "08818af9-ef1a-4c5e-84ac-1641480cdcee"
     },
     {
-      "credentials": {
-        "ollamaApi": {
-          "id": "Vob7VZOr0cQCHgsU",
-          "name": "Ollama account"
-        }
-      },
-      "name": "Ollama Chat Model",
       "parameters": {
-        "model": "gpt-oss:120b-cloud",
+        "model": "devstral-small-2:latest",
         "options": {}
       },
+      "name": "Ollama Chat Model",
       "position": [
         256,
         1040
       ],
       "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
       "typeVersion": 1,
-      "id": "395a131f-e6f9-4f66-aa9b-fe597c3f7454"
+      "id": "395a131f-e6f9-4f66-aa9b-fe597c3f7454",
+      "credentials": {
+        "ollamaApi": {
+          "id": "Vob7VZOr0cQCHgsU",
+          "name": "Ollama account"
+        }
+      }
     },
     {
-      "credentials": {
-        "snowflake": {
-          "id": "oi8Cr7VRLwSbn6CV",
-          "name": "Snowflake account"
-        }
-      },
-      "name": "DB Schema",
       "parameters": {
         "descriptionType": "manual",
+        "toolDescription": "Get list of all tables in database",
         "operation": "executeQuery",
-        "query": "SELECT table_schema, table_name\nFROM information_schema.tables\nWHERE table_schema = 'WEBAPP_AIWORKFLOW';",
-        "toolDescription": "Get list of all tables in database"
+        "query": "SELECT table_schema, table_name\nFROM information_schema.tables\nWHERE table_schema = 'WEBAPP_AIWORKFLOW';"
       },
+      "name": "DB Schema",
       "position": [
         512,
         1040
       ],
       "type": "n8n-nodes-base.snowflakeTool",
       "typeVersion": 1,
-      "id": "75021462-acb0-4ef2-a4da-6ec4c9209d8f"
+      "id": "75021462-acb0-4ef2-a4da-6ec4c9209d8f",
+      "credentials": {
+        "snowflake": {
+          "id": "oi8Cr7VRLwSbn6CV",
+          "name": "Snowflake account"
+        }
+      }
     }
   ],
   "connections": {
@@ -706,8 +691,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "fffe6ae1-2541-4dbd-8197-e7a3eadabbbc",
-  "activeVersionId": "fffe6ae1-2541-4dbd-8197-e7a3eadabbbc",
+  "versionId": "f6369845-41ce-4f49-b38c-8f35b3f9034d",
+  "activeVersionId": "f6369845-41ce-4f49-b38c-8f35b3f9034d",
   "triggerCount": 2,
   "shared": [
     {
@@ -719,16 +704,16 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-01-17T18:19:31.267Z",
-    "createdAt": "2026-01-17T18:19:31.267Z",
-    "versionId": "fffe6ae1-2541-4dbd-8197-e7a3eadabbbc",
+    "updatedAt": "2026-01-26T22:22:28.278Z",
+    "createdAt": "2026-01-26T22:12:23.333Z",
+    "versionId": "f6369845-41ce-4f49-b38c-8f35b3f9034d",
     "workflowId": "VrreoHxSO7d0UAO2",
     "nodes": [
       {
-        "name": "When chat message received",
         "parameters": {
           "options": {}
         },
+        "name": "When chat message received",
         "position": [
           32,
           928
@@ -739,13 +724,13 @@
         "id": "a5b8617e-563f-446a-8e1d-bce121f245f4"
       },
       {
-        "name": "AI Agent1",
         "parameters": {
           "hasOutputParser": true,
           "options": {
             "systemMessage": "You are Snowflake SQL assistant.\n\nUse tools to retrieve data from Snowflake and answer user.\n\nIMPORTANT Always check database schema and table definition for preparing SQL query."
           }
         },
+        "name": "AI Agent1",
         "position": [
           448,
           816
@@ -755,11 +740,11 @@
         "id": "1b69e537-ee28-45f3-8323-6dff48cc70aa"
       },
       {
-        "name": "Simple Memory",
         "parameters": {
           "sessionIdType": "customKey",
           "sessionKey": "={{ $('When chat message received').item.json.sessionId }}"
         },
+        "name": "Simple Memory",
         "position": [
           384,
           1040
@@ -769,34 +754,34 @@
         "id": "4cc7e324-7f98-49af-896e-8230ff08b6bc"
       },
       {
-        "credentials": {
-          "snowflake": {
-            "id": "oi8Cr7VRLwSbn6CV",
-            "name": "Snowflake account"
-          }
-        },
-        "name": "Get table definition",
         "parameters": {
           "descriptionType": "manual",
+          "toolDescription": "Get table definition to find all columns and types.",
           "operation": "executeQuery",
-          "query": "SELECT \n    column_name,\n    data_type\n\nFROM \n    WEB_APPLICATIONS.information_schema.columns\nWHERE \n    table_name = '{{ $fromAI(\"table_name\") }}'\n    AND table_schema = 'WEBAPP_AIWORKFLOW'\nORDER BY \n    ordinal_position;\n",
-          "toolDescription": "Get table definition to find all columns and types."
+          "query": "SELECT \n    column_name,\n    data_type\n\nFROM \n    WEB_APPLICATIONS.information_schema.columns\nWHERE \n    table_name = '{{ $fromAI(\"table_name\") }}'\n    AND table_schema = 'WEBAPP_AIWORKFLOW'\nORDER BY \n    ordinal_position;\n"
         },
+        "name": "Get table definition",
         "position": [
           768,
           1040
         ],
         "type": "n8n-nodes-base.snowflakeTool",
         "typeVersion": 1,
-        "id": "4777ceb7-0d5d-4f61-9767-bdb76dd30586"
+        "id": "4777ceb7-0d5d-4f61-9767-bdb76dd30586",
+        "credentials": {
+          "snowflake": {
+            "id": "oi8Cr7VRLwSbn6CV",
+            "name": "Snowflake account"
+          }
+        }
       },
       {
-        "name": "Webhook",
         "parameters": {
-          "options": {},
-          "path": "87893585-d157-468d-a9af-7238784e814c",
-          "responseMode": "responseNode"
+          "path": "getReport",
+          "responseMode": "responseNode",
+          "options": {}
         },
+        "name": "Webhook",
         "position": [
           32,
           1840
@@ -807,8 +792,6 @@
         "id": "d6b98488-a877-4afe-b4cc-295abf0c4d83"
       },
       {
-        "name": "Set HTML",
-        "onError": "continueErrorOutput",
         "parameters": {
           "assignments": {
             "assignments": [
@@ -822,21 +805,23 @@
           },
           "options": {}
         },
+        "name": "Set HTML",
         "position": [
           704,
           1760
         ],
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
-        "id": "c2e8aad8-c0bf-4811-b40d-d695a8745673"
+        "id": "c2e8aad8-c0bf-4811-b40d-d695a8745673",
+        "onError": "continueErrorOutput"
       },
       {
-        "name": "Respond to Webhook",
         "parameters": {
-          "options": {},
           "respondWith": "text",
-          "responseBody": "={{ $json.html }}"
+          "responseBody": "={{ $json.html }}",
+          "options": {}
         },
+        "name": "Respond to Webhook",
         "position": [
           1152,
           1840
@@ -846,18 +831,11 @@
         "id": "838225b5-06ef-42ef-8e82-84baaf9af631"
       },
       {
-        "credentials": {
-          "snowflake": {
-            "id": "oi8Cr7VRLwSbn6CV",
-            "name": "Snowflake account"
-          }
-        },
-        "name": "Snowflake1",
-        "onError": "continueErrorOutput",
         "parameters": {
           "operation": "executeQuery",
           "query": "{{ $json.query.sql }}"
         },
+        "name": "Snowflake1",
         "position": [
           256,
           1840
@@ -865,14 +843,21 @@
         "retryOnFail": false,
         "type": "n8n-nodes-base.snowflake",
         "typeVersion": 1,
-        "id": "c174c286-663c-4a24-ab70-b969d3e00af0"
+        "id": "c174c286-663c-4a24-ab70-b969d3e00af0",
+        "credentials": {
+          "snowflake": {
+            "id": "oi8Cr7VRLwSbn6CV",
+            "name": "Snowflake account"
+          }
+        },
+        "onError": "continueErrorOutput"
       },
       {
-        "name": "Aggregate1",
         "parameters": {
           "aggregate": "aggregateAllItemData",
           "options": {}
         },
+        "name": "Aggregate1",
         "position": [
           480,
           1760
@@ -882,7 +867,6 @@
         "id": "89f7ccf6-c130-4d7f-a41c-babc5581a120"
       },
       {
-        "name": "When Executed by Another Workflow",
         "parameters": {
           "workflowInputs": {
             "values": [
@@ -892,6 +876,7 @@
             ]
           }
         },
+        "name": "When Executed by Another Workflow",
         "position": [
           32,
           1440
@@ -901,7 +886,6 @@
         "id": "d9ea31f1-8a38-4b18-9c44-a7539b69150b"
       },
       {
-        "name": "Retrieve Data",
         "parameters": {
           "description": "Generate custom SQL queries using knowledge about DB schema and table definitions to provide needed response for user request.\nUse ->> operator to extract JSON data.\n\nSupported functions for big data analysis:\n• GROUP BY – for grouping data\n• SUM() – for summing values\n• AVG() – for calculating averages\n• COUNT() – for counting records\n• MIN() – for finding the minimum value\n• MAX() – for finding the maximum value\n• MEDIAN() – for median calculation\n• STDDEV() – for standard deviation\n• VARIANCE() – for variance calculation\n• PERCENTILE_CONT() – for percentile calculations\n• MODE() – for most frequent value\n• TREND() – for trend analysis over time\n• WINDOW FUNCTIONS – for advanced analytics (e.g., ROW_NUMBER(), RANK(), PARTITION BY)\n\nQuery example:\nSELECT * FROM FILES",
           "workflowId": {
@@ -933,6 +917,7 @@
             }
           }
         },
+        "name": "Retrieve Data",
         "position": [
           640,
           1040
@@ -942,12 +927,12 @@
         "id": "2dc3a12d-30e6-4b6a-a973-12bbcf1936e0"
       },
       {
-        "name": "Sticky Note",
         "parameters": {
           "content": "### Tool\n",
           "height": 560,
           "width": 1140
         },
+        "name": "Sticky Note",
         "position": [
           -48,
           1136
@@ -957,12 +942,12 @@
         "id": "7841c8f9-df7f-4504-a13a-b496343b42c2"
       },
       {
-        "name": "Sticky Note1",
         "parameters": {
           "content": "### Report workflow",
           "height": 480,
           "width": 1360
         },
+        "name": "Sticky Note1",
         "position": [
           -48,
           1584
@@ -972,12 +957,12 @@
         "id": "a861b02a-2da6-4791-9a5d-9acebc67d4e5"
       },
       {
-        "name": "Sticky Note2",
         "parameters": {
           "content": "### Agent",
           "height": 440,
           "width": 900
         },
+        "name": "Sticky Note2",
         "position": [
           -16,
           752
@@ -987,18 +972,11 @@
         "id": "03815a31-4a66-421e-ad45-f156b0491301"
       },
       {
-        "credentials": {
-          "snowflake": {
-            "id": "oi8Cr7VRLwSbn6CV",
-            "name": "Snowflake account"
-          }
-        },
-        "name": "Execute SQL",
-        "onError": "continueErrorOutput",
         "parameters": {
           "operation": "executeQuery",
           "query": "{{ $json.query }}"
         },
+        "name": "Execute SQL",
         "position": [
           256,
           1440
@@ -1006,14 +984,21 @@
         "retryOnFail": false,
         "type": "n8n-nodes-base.snowflake",
         "typeVersion": 1,
-        "id": "76b7dff9-3e94-42fc-9c05-946159d539fd"
+        "id": "76b7dff9-3e94-42fc-9c05-946159d539fd",
+        "credentials": {
+          "snowflake": {
+            "id": "oi8Cr7VRLwSbn6CV",
+            "name": "Snowflake account"
+          }
+        },
+        "onError": "continueErrorOutput"
       },
       {
-        "name": "Aggregate Data",
         "parameters": {
           "aggregate": "aggregateAllItemData",
           "options": {}
         },
+        "name": "Aggregate Data",
         "position": [
           480,
           1344
@@ -1023,7 +1008,6 @@
         "id": "7baac261-b0fb-4591-ae7e-8ff7add504c1"
       },
       {
-        "name": "If Count>100",
         "parameters": {
           "conditions": {
             "combinator": "and",
@@ -1048,6 +1032,7 @@
           },
           "options": {}
         },
+        "name": "If Count>100",
         "position": [
           704,
           1344
@@ -1057,12 +1042,12 @@
         "id": "7f186d10-7d71-4e41-9964-e720b694ec23"
       },
       {
-        "name": "Link to Report",
         "parameters": {
-          "jsonOutput": "={\"output\":\"[Link to report](http://localhost:5678/webhook/87893585-d157-468d-a9af-7238784e814c?sql={{ $('When Executed by Another Workflow').item.json.query.urlEncode() }})\"}",
           "mode": "raw",
+          "jsonOutput": "={\"output\":\"[Link to report](http://localhost:5678/webhook/getReport?sql={{ $('When Executed by Another Workflow').item.json.query.urlEncode() }})\"}",
           "options": {}
         },
+        "name": "Link to Report",
         "position": [
           928,
           1248
@@ -1072,12 +1057,12 @@
         "id": "643d62de-3427-406c-a2f7-ea9a15f51f52"
       },
       {
-        "name": "Return Data",
         "parameters": {
-          "jsonOutput": "={{ $json }}",
           "mode": "raw",
+          "jsonOutput": "={{ $json }}",
           "options": {}
         },
+        "name": "Return Data",
         "position": [
           928,
           1440
@@ -1087,12 +1072,12 @@
         "id": "e257695c-9512-4f87-bb2b-62def98c91d2"
       },
       {
-        "name": "Return Error",
         "parameters": {
-          "jsonOutput": "={{ $json }}",
           "mode": "raw",
+          "jsonOutput": "={{ $json }}",
           "options": {}
         },
+        "name": "Return Error",
         "position": [
           480,
           1536
@@ -1102,7 +1087,6 @@
         "id": "0e801546-70f4-48cb-9f93-95c5f935063e"
       },
       {
-        "name": "Error page",
         "parameters": {
           "assignments": {
             "assignments": [
@@ -1116,6 +1100,7 @@
           },
           "options": {}
         },
+        "name": "Error page",
         "position": [
           928,
           1904
@@ -1125,28 +1110,13 @@
         "id": "7e062a30-f1cc-4898-ae54-5e2e955439f1"
       },
       {
-        "name": "Sticky Note4",
         "parameters": {
-          "color": 5,
-          "content": "### Replace webhook address",
-          "height": 80
-        },
-        "position": [
-          2064,
-          816
-        ],
-        "type": "n8n-nodes-base.stickyNote",
-        "typeVersion": 1,
-        "id": "79d899db-beac-45fc-8795-5e6f6884d601"
-      },
-      {
-        "name": "Sticky Note5",
-        "parameters": {
-          "color": 5,
           "content": "### Map this workflow",
           "height": 80,
-          "width": 160
+          "width": 160,
+          "color": 5
         },
+        "name": "Sticky Note5",
         "position": [
           304,
           1264
@@ -1156,12 +1126,12 @@
         "id": "1087bcff-22fe-4811-b72f-8ff99b4b44b8"
       },
       {
-        "name": "Sticky Note6",
         "parameters": {
-          "color": 5,
           "content": "### Replace name of schema and database",
-          "height": 80
+          "height": 80,
+          "color": 5
         },
+        "name": "Sticky Note6",
         "position": [
           560,
           1264
@@ -1171,46 +1141,46 @@
         "id": "08818af9-ef1a-4c5e-84ac-1641480cdcee"
       },
       {
-        "credentials": {
-          "ollamaApi": {
-            "id": "Vob7VZOr0cQCHgsU",
-            "name": "Ollama account"
-          }
-        },
-        "name": "Ollama Chat Model",
         "parameters": {
-          "model": "gpt-oss:120b-cloud",
+          "model": "devstral-small-2:latest",
           "options": {}
         },
+        "name": "Ollama Chat Model",
         "position": [
           256,
           1040
         ],
         "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
         "typeVersion": 1,
-        "id": "395a131f-e6f9-4f66-aa9b-fe597c3f7454"
+        "id": "395a131f-e6f9-4f66-aa9b-fe597c3f7454",
+        "credentials": {
+          "ollamaApi": {
+            "id": "Vob7VZOr0cQCHgsU",
+            "name": "Ollama account"
+          }
+        }
       },
       {
-        "credentials": {
-          "snowflake": {
-            "id": "oi8Cr7VRLwSbn6CV",
-            "name": "Snowflake account"
-          }
-        },
-        "name": "DB Schema",
         "parameters": {
           "descriptionType": "manual",
+          "toolDescription": "Get list of all tables in database",
           "operation": "executeQuery",
-          "query": "SELECT table_schema, table_name\nFROM information_schema.tables\nWHERE table_schema = 'WEBAPP_AIWORKFLOW';",
-          "toolDescription": "Get list of all tables in database"
+          "query": "SELECT table_schema, table_name\nFROM information_schema.tables\nWHERE table_schema = 'WEBAPP_AIWORKFLOW';"
         },
+        "name": "DB Schema",
         "position": [
           512,
           1040
         ],
         "type": "n8n-nodes-base.snowflakeTool",
         "typeVersion": 1,
-        "id": "75021462-acb0-4ef2-a4da-6ec4c9209d8f"
+        "id": "75021462-acb0-4ef2-a4da-6ec4c9209d8f",
+        "credentials": {
+          "snowflake": {
+            "id": "oi8Cr7VRLwSbn6CV",
+            "name": "Snowflake account"
+          }
+        }
       }
     ],
     "connections": {
@@ -1414,8 +1384,8 @@
       }
     },
     "authors": "Shawn Crowley",
-    "name": null,
-    "description": null,
+    "name": "v1",
+    "description": "",
     "autosaved": false
   },
   "tags": []
