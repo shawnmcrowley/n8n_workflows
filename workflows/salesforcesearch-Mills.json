@@ -1,0 +1,324 @@
+{
+  "updatedAt": "2026-01-29T22:32:37.473Z",
+  "createdAt": "2026-01-20T22:53:37.007Z",
+  "id": "QhwIp9jKRey_vw_zj2FmB",
+  "name": "salesForceSearch",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "path": "getSalesForce"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "771e193e-8961-4c22-ba24-71db24c56cdc",
+      "name": "MCP Server Trigger",
+      "webhookId": "f3ba0aed-40a9-4259-89c0-bf65d379e691",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "bMR59ykKdOIA8mmY",
+          "name": "N8N-Header-Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "{\n  \"name\": \"customerAccountSalesforceByCountry\",\n  \"description\": \"Retrieves Customer & Account records matching a specific name and country\",\n  \"parameters\": {\n    \"type\": \"object\",\n    \"properties\": {\n     \"name\": {\n         \"type\":\"string\",\n         \"description\": \"Customers Account Name\"\n},\n      \"country\": {\n        \"type\": \"string\",\n        \"description\": \"The Country to retrieve Customer and Account Data\"\n},\n   \"required\": [\"name\"}\n    \"required\": [\"country\"]\n}\n}",
+        "resource": "search",
+        "query": "=SELECT \n    a.Id,\n    a.Name,\n    a.BillingCountry,\n    a.Phone,\n    a.Website,\n    a.Type,\n    a.Rating,\n    a.Site,\n    a.Account_Segment__c,\n    a.Fabric_Process__c,\n    a.CreatedDate,\n    a.LastModifiedDate,\n    (SELECT \n        c.Id,\n        c.FirstName,\n        c.LastName,\n        c.Email,\n        c.Phone,\n        c.Title,\n        c.Department\n     FROM Contacts c),\n    (SELECT \n        o.Id,\n        o.Name,\n        o.Amount,\n        o.StageName,\n        o.CloseDate,\n        o.Type,\n        o.Probability\n     FROM Opportunities o\n     WHERE o.IsClosed = false)\nFROM Account a\nWHERE a.Name LIKE '%{{$fromAI(\"name\",\"\",\"string\")}}%'\nAND a.BillingCountry LIKE '%{{$fromAI(\"country\",\"\",\"string\")}}%'\nORDER BY a.Name ASC\nLIMIT 10"
+      },
+      "type": "n8n-nodes-base.salesforceTool",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        224
+      ],
+      "id": "eff81732-9433-4258-b2fa-b3f5dbf49544",
+      "name": "customerAccountSalesforceByCountry",
+      "credentials": {
+        "salesforceOAuth2Api": {
+          "id": "El72ffp0tQmH4E3g",
+          "name": "Salesforce account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "{\n  \"name\": \"leadsByCustomerandCountry\",\n  \"description\": \"Retrieves Customer & Leads matching a specific country\",\n  \"parameters\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"country\": {\n        \"type\": \"string\",\n        \"description\": \"The Country to retrieve Customer Data\",\n      \"customer\": {\n        \"type\": \"string\",\n        \"description\": \"The Customer to retrieve Leads Data\",\n    },\n     \"required\": [\"country\"]\n    \"required\": [\"customer\"]\n  }\n}",
+        "resource": "search",
+        "query": "=SELECT Id, Name, Company, Country, Email \n    FROM Lead \n    WHERE Country LIKE '%{{ $fromAI(\"country\",\"\", \"string\") }}%' \n    AND Company LIKE '%{{ $fromAI(\"company\",\"\", \"string\") }}%'"
+      },
+      "type": "n8n-nodes-base.salesforceTool",
+      "typeVersion": 1,
+      "position": [
+        48,
+        240
+      ],
+      "id": "8712a676-8cb7-4a98-ae38-c58a3aaaf788",
+      "name": "leadsByCustomerandCountry",
+      "credentials": {
+        "salesforceOAuth2Api": {
+          "id": "El72ffp0tQmH4E3g",
+          "name": "Salesforce account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "search",
+        "query": "SELECT FIELDS(ALL) FROM Account LIMIT 10"
+      },
+      "type": "n8n-nodes-base.salesforceTool",
+      "typeVersion": 1,
+      "position": [
+        256,
+        256
+      ],
+      "id": "8d39757a-bfb8-4aec-8ad4-b94b5149cf6d",
+      "name": "FindObjectDetails",
+      "credentials": {
+        "salesforceOAuth2Api": {
+          "id": "El72ffp0tQmH4E3g",
+          "name": "Salesforce account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "customerAccountSalesforceByCountry": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "leadsByCustomerandCountry": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FindObjectDetails": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "muXPMz9FAT3fMK6g"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "d0956b2c-845c-434b-b4a1-07a4be079720",
+  "activeVersionId": "d0956b2c-845c-434b-b4a1-07a4be079720",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-01-20T22:53:37.007Z",
+      "createdAt": "2026-01-20T22:53:37.007Z",
+      "role": "workflow:owner",
+      "workflowId": "QhwIp9jKRey_vw_zj2FmB",
+      "projectId": "aRJv9cLftn98cx8V"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-01-29T22:32:48.233Z",
+    "createdAt": "2026-01-29T22:32:37.476Z",
+    "versionId": "d0956b2c-845c-434b-b4a1-07a4be079720",
+    "workflowId": "QhwIp9jKRey_vw_zj2FmB",
+    "nodes": [
+      {
+        "parameters": {
+          "authentication": "headerAuth",
+          "path": "getSalesForce"
+        },
+        "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+        "typeVersion": 2,
+        "position": [
+          -64,
+          0
+        ],
+        "id": "771e193e-8961-4c22-ba24-71db24c56cdc",
+        "name": "MCP Server Trigger",
+        "webhookId": "f3ba0aed-40a9-4259-89c0-bf65d379e691",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "bMR59ykKdOIA8mmY",
+            "name": "N8N-Header-Key"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "{\n  \"name\": \"customerAccountSalesforceByCountry\",\n  \"description\": \"Retrieves Customer & Account records matching a specific name and country\",\n  \"parameters\": {\n    \"type\": \"object\",\n    \"properties\": {\n     \"name\": {\n         \"type\":\"string\",\n         \"description\": \"Customers Account Name\"\n},\n      \"country\": {\n        \"type\": \"string\",\n        \"description\": \"The Country to retrieve Customer and Account Data\"\n},\n   \"required\": [\"name\"}\n    \"required\": [\"country\"]\n}\n}",
+          "resource": "search",
+          "query": "=SELECT \n    a.Id,\n    a.Name,\n    a.BillingCountry,\n    a.Phone,\n    a.Website,\n    a.Type,\n    a.Rating,\n    a.Site,\n    a.Account_Segment__c,\n    a.Fabric_Process__c,\n    a.CreatedDate,\n    a.LastModifiedDate,\n    (SELECT \n        c.Id,\n        c.FirstName,\n        c.LastName,\n        c.Email,\n        c.Phone,\n        c.Title,\n        c.Department\n     FROM Contacts c),\n    (SELECT \n        o.Id,\n        o.Name,\n        o.Amount,\n        o.StageName,\n        o.CloseDate,\n        o.Type,\n        o.Probability\n     FROM Opportunities o\n     WHERE o.IsClosed = false)\nFROM Account a\nWHERE a.Name LIKE '%{{$fromAI(\"name\",\"\",\"string\")}}%'\nAND a.BillingCountry LIKE '%{{$fromAI(\"country\",\"\",\"string\")}}%'\nORDER BY a.Name ASC\nLIMIT 10"
+        },
+        "type": "n8n-nodes-base.salesforceTool",
+        "typeVersion": 1,
+        "position": [
+          -144,
+          224
+        ],
+        "id": "eff81732-9433-4258-b2fa-b3f5dbf49544",
+        "name": "customerAccountSalesforceByCountry",
+        "credentials": {
+          "salesforceOAuth2Api": {
+            "id": "El72ffp0tQmH4E3g",
+            "name": "Salesforce account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "{\n  \"name\": \"leadsByCustomerandCountry\",\n  \"description\": \"Retrieves Customer & Leads matching a specific country\",\n  \"parameters\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"country\": {\n        \"type\": \"string\",\n        \"description\": \"The Country to retrieve Customer Data\",\n      \"customer\": {\n        \"type\": \"string\",\n        \"description\": \"The Customer to retrieve Leads Data\",\n    },\n     \"required\": [\"country\"]\n    \"required\": [\"customer\"]\n  }\n}",
+          "resource": "search",
+          "query": "=SELECT Id, Name, Company, Country, Email \n    FROM Lead \n    WHERE Country LIKE '%{{ $fromAI(\"country\",\"\", \"string\") }}%' \n    AND Company LIKE '%{{ $fromAI(\"company\",\"\", \"string\") }}%'"
+        },
+        "type": "n8n-nodes-base.salesforceTool",
+        "typeVersion": 1,
+        "position": [
+          48,
+          240
+        ],
+        "id": "8712a676-8cb7-4a98-ae38-c58a3aaaf788",
+        "name": "leadsByCustomerandCountry",
+        "credentials": {
+          "salesforceOAuth2Api": {
+            "id": "El72ffp0tQmH4E3g",
+            "name": "Salesforce account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "search",
+          "query": "SELECT FIELDS(ALL) FROM Account LIMIT 10"
+        },
+        "type": "n8n-nodes-base.salesforceTool",
+        "typeVersion": 1,
+        "position": [
+          256,
+          256
+        ],
+        "id": "8d39757a-bfb8-4aec-8ad4-b94b5149cf6d",
+        "name": "FindObjectDetails",
+        "credentials": {
+          "salesforceOAuth2Api": {
+            "id": "El72ffp0tQmH4E3g",
+            "name": "Salesforce account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "customerAccountSalesforceByCountry": {
+        "ai_tool": [
+          [
+            {
+              "node": "MCP Server Trigger",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "leadsByCustomerandCountry": {
+        "ai_tool": [
+          [
+            {
+              "node": "MCP Server Trigger",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "FindObjectDetails": {
+        "ai_tool": [
+          [
+            {
+              "node": "MCP Server Trigger",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Shawn Crowley",
+    "name": "v1",
+    "description": "",
+    "autosaved": true
+  },
+  "tags": [
+    {
+      "updatedAt": "2026-01-23T21:13:40.928Z",
+      "createdAt": "2026-01-23T21:13:40.928Z",
+      "id": "MiSQZYaICo2EVuTV",
+      "name": "Mills"
+    },
+    {
+      "updatedAt": "2026-01-23T21:13:37.841Z",
+      "createdAt": "2026-01-23T21:13:37.841Z",
+      "id": "9CNqJdSFdmzLrTHd",
+      "name": "Garments"
+    },
+    {
+      "updatedAt": "2026-01-23T21:13:32.103Z",
+      "createdAt": "2026-01-23T21:13:32.103Z",
+      "id": "qsOk76CyB7XpkDOm",
+      "name": "Custom Objects"
+    },
+    {
+      "updatedAt": "2026-01-23T21:13:28.376Z",
+      "createdAt": "2026-01-23T21:13:28.376Z",
+      "id": "ONsISO0fbtg9oj3N",
+      "name": "Opportunities"
+    },
+    {
+      "updatedAt": "2026-01-23T21:13:23.631Z",
+      "createdAt": "2026-01-23T21:13:23.631Z",
+      "id": "gaZxpt5q1pmtXsSO",
+      "name": "Accounts"
+    },
+    {
+      "updatedAt": "2026-01-23T21:13:20.696Z",
+      "createdAt": "2026-01-23T21:13:20.696Z",
+      "id": "vw3nQB7pCCG69T9x",
+      "name": "Salesforce"
+    }
+  ]
+}
