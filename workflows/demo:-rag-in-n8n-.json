@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-02T21:05:30.818Z",
+  "updatedAt": "2026-02-04T23:33:39.609Z",
   "createdAt": "2026-01-23T23:04:15.366Z",
   "id": "yUalubL2RY9cmka1",
   "name": "Demo: RAG in n8n",
@@ -39,8 +39,8 @@
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "typeVersion": 1.1,
       "position": [
-        320,
-        160
+        336,
+        240
       ],
       "id": "94aecac0-03f9-4915-932b-d14a2576607b",
       "name": "Default Data Loader"
@@ -65,7 +65,7 @@
       "parameters": {
         "content": "### 📚 Load Data Flow",
         "height": 460,
-        "width": 700,
+        "width": 1068,
         "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -90,11 +90,12 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
       "typeVersion": 1.2,
       "position": [
-        64,
-        0
+        512,
+        -16
       ],
       "id": "bf50a11f-ca6a-4e04-a6d2-42fee272b260",
-      "name": "Insert Data to Store"
+      "name": "Insert Data to Store",
+      "disabled": true
     },
     {
       "parameters": {
@@ -110,7 +111,7 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
       "typeVersion": 1.2,
       "position": [
-        944,
+        1312,
         208
       ],
       "id": "09c0db62-5413-440e-8c13-fb6bb66d9b6a",
@@ -123,7 +124,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        944,
+        1312,
         -16
       ],
       "id": "579aed76-9644-42d1-ac13-7369059ff1c2",
@@ -136,7 +137,7 @@
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
       "position": [
-        720,
+        1088,
         -16
       ],
       "id": "9c30de61-935a-471f-ae88-ec5f67beeefc",
@@ -152,7 +153,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        608,
+        976,
         -64
       ],
       "typeVersion": 1,
@@ -168,7 +169,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        672,
+        1040,
         448
       ],
       "typeVersion": 1,
@@ -182,8 +183,8 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
       "typeVersion": 1,
       "position": [
-        480,
-        688
+        800,
+        592
       ],
       "id": "f425b6e3-1b80-40a9-8d5f-811c4613b33f",
       "name": "Embeddings Ollama",
@@ -202,8 +203,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
       "typeVersion": 1,
       "position": [
-        64,
-        176
+        1104,
+        224
       ],
       "id": "6a472bb9-6d93-4a7c-b2d6-1b701ac8a897",
       "name": "Ollama Chat Model",
@@ -213,6 +214,26 @@
           "name": "Ollama account"
         }
       }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        160,
+        16
+      ],
+      "id": "b647f5fd-67a6-4dfe-90cd-29238dbd95fe",
+      "name": "Postgres PGVector Store",
+      "credentials": {
+        "postgres": {
+          "id": "eU8STYFXdclsY4x1",
+          "name": "Postgres account"
+        }
+      }
     }
   ],
   "connections": {
@@ -220,7 +241,7 @@
       "main": [
         [
           {
-            "node": "Insert Data to Store",
+            "node": "Postgres PGVector Store",
             "type": "main",
             "index": 0
           }
@@ -231,7 +252,7 @@
       "ai_document": [
         [
           {
-            "node": "Insert Data to Store",
+            "node": "Postgres PGVector Store",
             "type": "ai_document",
             "index": 0
           }
@@ -264,12 +285,12 @@
       "ai_embedding": [
         [
           {
-            "node": "Insert Data to Store",
+            "node": "Query Data Tool",
             "type": "ai_embedding",
             "index": 0
           },
           {
-            "node": "Query Data Tool",
+            "node": "Postgres PGVector Store",
             "type": "ai_embedding",
             "index": 0
           }
@@ -286,6 +307,11 @@
           }
         ]
       ]
+    },
+    "Postgres PGVector Store": {
+      "main": [
+        []
+      ]
     }
   },
   "settings": {
@@ -298,7 +324,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "6cdaf850-33a5-4819-8d3a-32e141730d28",
+  "versionId": "e43c9354-34e4-42f1-99d5-b2bce2b3cb7e",
   "activeVersionId": null,
   "triggerCount": 0,
   "shared": [
