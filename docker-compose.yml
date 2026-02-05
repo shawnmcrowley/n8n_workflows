@@ -12,7 +12,7 @@ services:
     networks:
       - integration_network
     depends_on:
-      - postgres
+      - db_pg18
     environment:
       - DB_TYPE=${DB_TYPE}
       - DB_POSTGRESDB_HOST=${DB_POSTGRESDB_HOST}
@@ -22,7 +22,7 @@ services:
       - DB_POSTGRESDB_USER=${DB_POSTGRESDB_USER}
       - DB_POSTGRESDB_PASSWORD=${DB_POSTGRESDB_PASSWORD}
       - N8N_HOST=${N8N_HOST}
-      - N8N_PROTOCOL=${N8N_PROTOCAL}
+      - N8N_PROTOCOL=${N8N_PROTOCOL}
       - N8N_WEBHOOK_URL=${N8N_WEBHOOK_URL}
       - NODE_ENV=production
       - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
@@ -35,9 +35,9 @@ services:
 
       
 
-  postgres:
-    image: ankane/pgvector
-    container_name: postgresdb
+  db_pg18:
+    image: pgvector/pgvector:pg18-trixie
+    container_name: pg18_vector_db
     restart: unless-stopped
     environment:
       - POSTGRES_USER=${DB_POSTGRESDB_USER}
@@ -48,7 +48,7 @@ services:
     networks:
       - integration_network  
     volumes:
-      - pgvector-data:/var/lib/postgresql/data
+      - postgres18-data:/var/lib/postgresql
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: pgadmin
@@ -63,11 +63,11 @@ services:
       - integration_network
    
     depends_on:
-      - postgres
+      - db_pg18
     volumes:
       - pgadmin-data:/var/lib/pgadmin
 
 volumes:
   n8n-data:
-  pgvector-data:
+  postgres18-data:
   pgadmin-data:

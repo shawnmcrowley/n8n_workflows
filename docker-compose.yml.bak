@@ -1,0 +1,73 @@
+networks:
+  integration_network:
+    external: true
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    pull_policy: always
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    networks:
+      - integration_network
+    depends_on:
+      - postgres
+    environment:
+      - DB_TYPE=${DB_TYPE}
+      - DB_POSTGRESDB_HOST=${DB_POSTGRESDB_HOST}
+      - DB_POSTGRESDB_PORT=${DB_POSTGRESDB_PORT}
+      - DB_POSTGRESDB_DATABASE=${DB_POSTGRESDB_DATABASE}
+      - DB_POSTGRESDB_SCHEMA=${DB_POSTGRESDB_SCHEMA}
+      - DB_POSTGRESDB_USER=${DB_POSTGRESDB_USER}
+      - DB_POSTGRESDB_PASSWORD=${DB_POSTGRESDB_PASSWORD}
+      - N8N_HOST=${N8N_HOST}
+      - N8N_PROTOCOL=${N8N_PROTOCOL}
+      - N8N_WEBHOOK_URL=${N8N_WEBHOOK_URL}
+      - NODE_ENV=production
+      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
+      - N8N_RESTRICT_FILE_ACCESS_TO=/swagger-html
+  
+    volumes:
+      - n8n-data:/home/node/.n8n
+      - ./certificates:/opt/custom-certificates
+      - ./swagger-html:/swagger-html:rw 
+
+      
+
+  postgres:
+    image: ankane/pgvector
+    container_name: postgresdb
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${DB_POSTGRESDB_USER}
+      - POSTGRES_PASSWORD=${DB_POSTGRESDB_PASSWORD}
+      - POSTGRES_DB=${DB_POSTGRESDB_DATABASE}
+    ports:
+      - "5432:5432"
+    networks:
+      - integration_network  
+    volumes:
+      - pgvector-data:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: unless-stopped
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+      
+    ports:
+      - "5050:80"
+    networks:
+      - integration_network
+   
+    depends_on:
+      - postgres
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  n8n-data:
+  pgvector-data:
+  pgadmin-data:
