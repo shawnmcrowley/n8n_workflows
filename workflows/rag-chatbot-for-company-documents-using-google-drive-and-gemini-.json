@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2025-12-15T19:17:11.097Z",
+  "updatedAt": "2026-02-05T22:51:53.497Z",
   "createdAt": "2025-12-15T19:17:11.097Z",
   "id": "AuiifIitm5lUjSs5",
   "name": "RAG Chatbot for Company Documents using Google Drive and Gemini",
   "active": false,
-  "isArchived": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -465,7 +465,7 @@
     "templateId": "2753"
   },
   "pinData": {},
-  "versionId": "fb183add-4abf-488d-893c-6a52d9f04428",
+  "versionId": "f33d9605-e7a3-4892-9828-e0b79168b8c1",
   "activeVersionId": null,
   "triggerCount": 0,
   "shared": [
