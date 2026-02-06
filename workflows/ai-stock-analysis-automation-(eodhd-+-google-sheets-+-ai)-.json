@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-01-17T18:19:52.395Z",
+  "updatedAt": "2026-02-05T23:01:16.094Z",
   "createdAt": "2026-01-08T14:32:39.044Z",
   "id": "K0JZPGQRe-jTTVFEwunI4",
   "name": "AI Stock Analysis Automation (EODHD + Google Sheets + AI)",
   "active": false,
-  "isArchived": false,
+  "isArchived": true,
   "nodes": [
     {
       "name": "When clicking ‘Execute workflow’",
@@ -7652,7 +7652,7 @@
       }
     ]
   },
-  "versionId": "ce7bdf05-37f5-4fd5-a183-f9e8c0a23263",
+  "versionId": "0b77eb34-2c8c-4014-ae61-df12413e0e3e",
   "activeVersionId": null,
   "triggerCount": 0,
   "shared": [
