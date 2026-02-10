@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-26T21:55:19.093Z",
+  "updatedAt": "2026-02-10T21:04:40.592Z",
   "createdAt": "2025-12-28T15:34:26.048Z",
   "id": "8YAGr0M3BfHXL2E5",
   "name": "sendEmail",
@@ -42,7 +42,7 @@
       "type": "n8n-nodes-base.gmailTool",
       "typeVersion": 2.2,
       "position": [
-        16,
+        -128,
         224
       ],
       "id": "6b9f5b22-f916-4f2f-a0be-19b4f04f8d8c",
@@ -70,8 +70,8 @@
       "type": "n8n-nodes-base.microsoftOutlookTool",
       "typeVersion": 2,
       "position": [
-        224,
-        224
+        480,
+        208
       ],
       "id": "350eefdf-adf4-45b4-9edd-37efe1c7a822",
       "name": "outlook-send-mail",
@@ -83,6 +83,17 @@
         }
       },
       "disabled": true
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        96,
+        224
+      ],
+      "id": "b69fb99b-bade-4996-a6aa-5ecd00a7fbb1",
+      "name": "Call n8n Workflow Tool"
     }
   ],
   "connections": {
@@ -107,6 +118,17 @@
           }
         ]
       ]
+    },
+    "Call n8n Workflow Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -121,7 +143,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "4bdbe4c0-2ed0-48f1-a40c-c6d747c96485",
+  "versionId": "61398c75-52d9-40f4-a09f-b10a6442f6bd",
   "activeVersionId": "4bdbe4c0-2ed0-48f1-a40c-c6d747c96485",
   "triggerCount": 1,
   "shared": [
