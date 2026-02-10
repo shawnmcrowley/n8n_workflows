@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-29T22:32:37.473Z",
+  "updatedAt": "2026-02-10T21:23:11.499Z",
   "createdAt": "2026-01-20T22:53:37.007Z",
   "id": "QhwIp9jKRey_vw_zj2FmB",
   "name": "salesForceSearch",
@@ -30,28 +30,6 @@
     {
       "parameters": {
         "descriptionType": "manual",
-        "toolDescription": "{\n  \"name\": \"customerAccountSalesforceByCountry\",\n  \"description\": \"Retrieves Customer & Account records matching a specific name and country\",\n  \"parameters\": {\n    \"type\": \"object\",\n    \"properties\": {\n     \"name\": {\n         \"type\":\"string\",\n         \"description\": \"Customers Account Name\"\n},\n      \"country\": {\n        \"type\": \"string\",\n        \"description\": \"The Country to retrieve Customer and Account Data\"\n},\n   \"required\": [\"name\"}\n    \"required\": [\"country\"]\n}\n}",
-        "resource": "search",
-        "query": "=SELECT \n    a.Id,\n    a.Name,\n    a.BillingCountry,\n    a.Phone,\n    a.Website,\n    a.Type,\n    a.Rating,\n    a.Site,\n    a.Account_Segment__c,\n    a.Fabric_Process__c,\n    a.CreatedDate,\n    a.LastModifiedDate,\n    (SELECT \n        c.Id,\n        c.FirstName,\n        c.LastName,\n        c.Email,\n        c.Phone,\n        c.Title,\n        c.Department\n     FROM Contacts c),\n    (SELECT \n        o.Id,\n        o.Name,\n        o.Amount,\n        o.StageName,\n        o.CloseDate,\n        o.Type,\n        o.Probability\n     FROM Opportunities o\n     WHERE o.IsClosed = false)\nFROM Account a\nWHERE a.Name LIKE '%{{$fromAI(\"name\",\"\",\"string\")}}%'\nAND a.BillingCountry LIKE '%{{$fromAI(\"country\",\"\",\"string\")}}%'\nORDER BY a.Name ASC\nLIMIT 10"
-      },
-      "type": "n8n-nodes-base.salesforceTool",
-      "typeVersion": 1,
-      "position": [
-        -144,
-        224
-      ],
-      "id": "eff81732-9433-4258-b2fa-b3f5dbf49544",
-      "name": "customerAccountSalesforceByCountry",
-      "credentials": {
-        "salesforceOAuth2Api": {
-          "id": "El72ffp0tQmH4E3g",
-          "name": "Salesforce account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "descriptionType": "manual",
         "toolDescription": "{\n  \"name\": \"leadsByCustomerandCountry\",\n  \"description\": \"Retrieves Customer & Leads matching a specific country\",\n  \"parameters\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"country\": {\n        \"type\": \"string\",\n        \"description\": \"The Country to retrieve Customer Data\",\n      \"customer\": {\n        \"type\": \"string\",\n        \"description\": \"The Customer to retrieve Leads Data\",\n    },\n     \"required\": [\"country\"]\n    \"required\": [\"customer\"]\n  }\n}",
         "resource": "search",
         "query": "=SELECT Id, Name, Company, Country, Email \n    FROM Lead \n    WHERE Country LIKE '%{{ $fromAI(\"country\",\"\", \"string\") }}%' \n    AND Company LIKE '%{{ $fromAI(\"company\",\"\", \"string\") }}%'"
@@ -59,8 +37,8 @@
       "type": "n8n-nodes-base.salesforceTool",
       "typeVersion": 1,
       "position": [
-        48,
-        240
+        112,
+        224
       ],
       "id": "8712a676-8cb7-4a98-ae38-c58a3aaaf788",
       "name": "leadsByCustomerandCountry",
@@ -73,17 +51,41 @@
     },
     {
       "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "{\n  \"name\": \"customerAccountByCountry\",\n  \"description\": \"Retrieves Customer & Account records matching a specific name and country\",\n  \"parameters\": {\n    \"type\": \"object\",\n    \"properties\": {\n     \"name\": {\n         \"type\":\"string\",\n         \"description\": \"Customers Account Name\"\n},\n      \"country\": {\n        \"type\": \"string\",\n        \"description\": \"The Country to retrieve Customer and Account Data\"\n},\n   \"required\": [\"name\"}\n    \"required\": [\"country\"]\n}\n}",
         "resource": "search",
-        "query": "SELECT FIELDS(ALL) FROM Account LIMIT 10"
+        "query": "=SELECT \n    a.Id,\n    a.Name,\n    a.BillingCountry,\n    a.Phone,\n    a.Website,\n    a.Type,\n    a.Rating,\n    a.Site,\n    a.Account_Segment__c,\n    a.Fabric_Process__c,\n    a.CreatedDate,\n    a.LastModifiedDate,\n    (SELECT \n        c.Id,\n        c.FirstName,\n        c.LastName,\n        c.Email,\n        c.Phone,\n        c.Title,\n        c.Department\n     FROM Contacts c),\n    (SELECT \n        o.Id,\n        o.Name,\n        o.Amount,\n        o.StageName,\n        o.CloseDate,\n        o.Type,\n        o.Probability\n     FROM Opportunities o\n     WHERE o.IsClosed = false)\nFROM Account a\nWHERE a.Name LIKE '%{{$fromAI(\"name\",\"\",\"string\")}}%'\nAND a.BillingCountry LIKE '%{{$fromAI(\"country\",\"\",\"string\")}}%'\nORDER BY a.Name ASC\nLIMIT 10"
       },
       "type": "n8n-nodes-base.salesforceTool",
       "typeVersion": 1,
       "position": [
-        256,
-        256
+        -144,
+        224
+      ],
+      "id": "eff81732-9433-4258-b2fa-b3f5dbf49544",
+      "name": "customerAccountByCountry",
+      "credentials": {
+        "salesforceOAuth2Api": {
+          "id": "El72ffp0tQmH4E3g",
+          "name": "Salesforce account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Take an Object Name as a query parameter and return the fields and attributes of SalesForce Objects",
+        "resource": "search",
+        "query": "=SELECT FIELDS(ALL) FROM {{ $fromAI('Query', ``, 'string') }} LIMIT 1"
+      },
+      "type": "n8n-nodes-base.salesforceTool",
+      "typeVersion": 1,
+      "position": [
+        336,
+        240
       ],
       "id": "8d39757a-bfb8-4aec-8ad4-b94b5149cf6d",
-      "name": "FindObjectDetails",
+      "name": "findObjectDetails",
       "credentials": {
         "salesforceOAuth2Api": {
           "id": "El72ffp0tQmH4E3g",
@@ -93,17 +95,6 @@
     }
   ],
   "connections": {
-    "customerAccountSalesforceByCountry": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Server Trigger",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "leadsByCustomerandCountry": {
       "ai_tool": [
         [
@@ -115,7 +106,18 @@
         ]
       ]
     },
-    "FindObjectDetails": {
+    "customerAccountByCountry": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "findObjectDetails": {
       "ai_tool": [
         [
           {
@@ -139,8 +141,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "d0956b2c-845c-434b-b4a1-07a4be079720",
-  "activeVersionId": "d0956b2c-845c-434b-b4a1-07a4be079720",
+  "versionId": "db97917d-2d3c-4b12-a6a0-5aa526e14ef6",
+  "activeVersionId": "db97917d-2d3c-4b12-a6a0-5aa526e14ef6",
   "triggerCount": 1,
   "shared": [
     {
@@ -152,9 +154,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-01-29T22:32:48.233Z",
-    "createdAt": "2026-01-29T22:32:37.476Z",
-    "versionId": "d0956b2c-845c-434b-b4a1-07a4be079720",
+    "updatedAt": "2026-02-10T21:25:05.668Z",
+    "createdAt": "2026-02-10T21:23:11.502Z",
+    "versionId": "db97917d-2d3c-4b12-a6a0-5aa526e14ef6",
     "workflowId": "QhwIp9jKRey_vw_zj2FmB",
     "nodes": [
       {
@@ -181,28 +183,6 @@
       {
         "parameters": {
           "descriptionType": "manual",
-          "toolDescription": "{\n  \"name\": \"customerAccountSalesforceByCountry\",\n  \"description\": \"Retrieves Customer & Account records matching a specific name and country\",\n  \"parameters\": {\n    \"type\": \"object\",\n    \"properties\": {\n     \"name\": {\n         \"type\":\"string\",\n         \"description\": \"Customers Account Name\"\n},\n      \"country\": {\n        \"type\": \"string\",\n        \"description\": \"The Country to retrieve Customer and Account Data\"\n},\n   \"required\": [\"name\"}\n    \"required\": [\"country\"]\n}\n}",
-          "resource": "search",
-          "query": "=SELECT \n    a.Id,\n    a.Name,\n    a.BillingCountry,\n    a.Phone,\n    a.Website,\n    a.Type,\n    a.Rating,\n    a.Site,\n    a.Account_Segment__c,\n    a.Fabric_Process__c,\n    a.CreatedDate,\n    a.LastModifiedDate,\n    (SELECT \n        c.Id,\n        c.FirstName,\n        c.LastName,\n        c.Email,\n        c.Phone,\n        c.Title,\n        c.Department\n     FROM Contacts c),\n    (SELECT \n        o.Id,\n        o.Name,\n        o.Amount,\n        o.StageName,\n        o.CloseDate,\n        o.Type,\n        o.Probability\n     FROM Opportunities o\n     WHERE o.IsClosed = false)\nFROM Account a\nWHERE a.Name LIKE '%{{$fromAI(\"name\",\"\",\"string\")}}%'\nAND a.BillingCountry LIKE '%{{$fromAI(\"country\",\"\",\"string\")}}%'\nORDER BY a.Name ASC\nLIMIT 10"
-        },
-        "type": "n8n-nodes-base.salesforceTool",
-        "typeVersion": 1,
-        "position": [
-          -144,
-          224
-        ],
-        "id": "eff81732-9433-4258-b2fa-b3f5dbf49544",
-        "name": "customerAccountSalesforceByCountry",
-        "credentials": {
-          "salesforceOAuth2Api": {
-            "id": "El72ffp0tQmH4E3g",
-            "name": "Salesforce account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "descriptionType": "manual",
           "toolDescription": "{\n  \"name\": \"leadsByCustomerandCountry\",\n  \"description\": \"Retrieves Customer & Leads matching a specific country\",\n  \"parameters\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"country\": {\n        \"type\": \"string\",\n        \"description\": \"The Country to retrieve Customer Data\",\n      \"customer\": {\n        \"type\": \"string\",\n        \"description\": \"The Customer to retrieve Leads Data\",\n    },\n     \"required\": [\"country\"]\n    \"required\": [\"customer\"]\n  }\n}",
           "resource": "search",
           "query": "=SELECT Id, Name, Company, Country, Email \n    FROM Lead \n    WHERE Country LIKE '%{{ $fromAI(\"country\",\"\", \"string\") }}%' \n    AND Company LIKE '%{{ $fromAI(\"company\",\"\", \"string\") }}%'"
@@ -210,8 +190,8 @@
         "type": "n8n-nodes-base.salesforceTool",
         "typeVersion": 1,
         "position": [
-          48,
-          240
+          112,
+          224
         ],
         "id": "8712a676-8cb7-4a98-ae38-c58a3aaaf788",
         "name": "leadsByCustomerandCountry",
@@ -224,17 +204,41 @@
       },
       {
         "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "{\n  \"name\": \"customerAccountByCountry\",\n  \"description\": \"Retrieves Customer & Account records matching a specific name and country\",\n  \"parameters\": {\n    \"type\": \"object\",\n    \"properties\": {\n     \"name\": {\n         \"type\":\"string\",\n         \"description\": \"Customers Account Name\"\n},\n      \"country\": {\n        \"type\": \"string\",\n        \"description\": \"The Country to retrieve Customer and Account Data\"\n},\n   \"required\": [\"name\"}\n    \"required\": [\"country\"]\n}\n}",
           "resource": "search",
-          "query": "SELECT FIELDS(ALL) FROM Account LIMIT 10"
+          "query": "=SELECT \n    a.Id,\n    a.Name,\n    a.BillingCountry,\n    a.Phone,\n    a.Website,\n    a.Type,\n    a.Rating,\n    a.Site,\n    a.Account_Segment__c,\n    a.Fabric_Process__c,\n    a.CreatedDate,\n    a.LastModifiedDate,\n    (SELECT \n        c.Id,\n        c.FirstName,\n        c.LastName,\n        c.Email,\n        c.Phone,\n        c.Title,\n        c.Department\n     FROM Contacts c),\n    (SELECT \n        o.Id,\n        o.Name,\n        o.Amount,\n        o.StageName,\n        o.CloseDate,\n        o.Type,\n        o.Probability\n     FROM Opportunities o\n     WHERE o.IsClosed = false)\nFROM Account a\nWHERE a.Name LIKE '%{{$fromAI(\"name\",\"\",\"string\")}}%'\nAND a.BillingCountry LIKE '%{{$fromAI(\"country\",\"\",\"string\")}}%'\nORDER BY a.Name ASC\nLIMIT 10"
         },
         "type": "n8n-nodes-base.salesforceTool",
         "typeVersion": 1,
         "position": [
-          256,
-          256
+          -144,
+          224
+        ],
+        "id": "eff81732-9433-4258-b2fa-b3f5dbf49544",
+        "name": "customerAccountByCountry",
+        "credentials": {
+          "salesforceOAuth2Api": {
+            "id": "El72ffp0tQmH4E3g",
+            "name": "Salesforce account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Take an Object Name as a query parameter and return the fields and attributes of SalesForce Objects",
+          "resource": "search",
+          "query": "=SELECT FIELDS(ALL) FROM {{ $fromAI('Query', ``, 'string') }} LIMIT 1"
+        },
+        "type": "n8n-nodes-base.salesforceTool",
+        "typeVersion": 1,
+        "position": [
+          336,
+          240
         ],
         "id": "8d39757a-bfb8-4aec-8ad4-b94b5149cf6d",
-        "name": "FindObjectDetails",
+        "name": "findObjectDetails",
         "credentials": {
           "salesforceOAuth2Api": {
             "id": "El72ffp0tQmH4E3g",
@@ -244,17 +248,6 @@
       }
     ],
     "connections": {
-      "customerAccountSalesforceByCountry": {
-        "ai_tool": [
-          [
-            {
-              "node": "MCP Server Trigger",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "leadsByCustomerandCountry": {
         "ai_tool": [
           [
@@ -266,7 +259,18 @@
           ]
         ]
       },
-      "FindObjectDetails": {
+      "customerAccountByCountry": {
+        "ai_tool": [
+          [
+            {
+              "node": "MCP Server Trigger",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "findObjectDetails": {
         "ai_tool": [
           [
             {
