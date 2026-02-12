@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-10T23:09:00.648Z",
+  "updatedAt": "2026-02-11T22:36:13.070Z",
   "createdAt": "2026-02-10T21:26:44.454Z",
   "id": "8x5BpeREvlNWEaiPgxP9I",
   "name": "salesForceAgent",
@@ -14,8 +14,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
       "typeVersion": 1,
       "position": [
-        144,
-        48
+        128,
+        64
       ],
       "id": "01bc8a77-c691-43eb-9296-e03eef39ed4a",
       "name": "Ollama Chat Model",
@@ -53,7 +53,7 @@
       "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
       "typeVersion": 1.2,
       "position": [
-        592,
+        640,
         64
       ],
       "id": "1ebed073-fe8a-4246-8523-c54f05909e10",
@@ -106,6 +106,17 @@
       ],
       "id": "5d0daca8-ccba-4607-b1e3-60644bb45387",
       "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        496,
+        64
+      ],
+      "id": "1f26d6f6-1f3d-4975-88ac-45b71ac160c0",
+      "name": "Think"
     }
   ],
   "connections": {
@@ -168,6 +179,17 @@
           }
         ]
       ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "salesForceAgent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -183,8 +205,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "dca495a7-aa8a-4db1-8195-5c0194aa67e4",
-  "activeVersionId": "dca495a7-aa8a-4db1-8195-5c0194aa67e4",
+  "versionId": "9a4bb734-6f31-4aad-b145-b7a7083f13c7",
+  "activeVersionId": "21a198af-32e1-4f72-8252-7c93f04f39d8",
   "triggerCount": 0,
   "shared": [
     {
@@ -196,9 +218,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-02-10T23:09:28.749Z",
-    "createdAt": "2026-02-10T23:09:00.649Z",
-    "versionId": "dca495a7-aa8a-4db1-8195-5c0194aa67e4",
+    "updatedAt": "2026-02-11T16:56:43.020Z",
+    "createdAt": "2026-02-11T16:37:46.631Z",
+    "versionId": "21a198af-32e1-4f72-8252-7c93f04f39d8",
     "workflowId": "8x5BpeREvlNWEaiPgxP9I",
     "nodes": [
       {
@@ -248,7 +270,7 @@
         "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
         "typeVersion": 1.2,
         "position": [
-          592,
+          640,
           64
         ],
         "id": "1ebed073-fe8a-4246-8523-c54f05909e10",
@@ -301,6 +323,17 @@
         ],
         "id": "5d0daca8-ccba-4607-b1e3-60644bb45387",
         "name": "Structured Output Parser"
+      },
+      {
+        "parameters": {},
+        "type": "@n8n/n8n-nodes-langchain.toolThink",
+        "typeVersion": 1.1,
+        "position": [
+          496,
+          64
+        ],
+        "id": "1f26d6f6-1f3d-4975-88ac-45b71ac160c0",
+        "name": "Think"
       }
     ],
     "connections": {
@@ -363,10 +396,21 @@
             }
           ]
         ]
+      },
+      "Think": {
+        "ai_tool": [
+          [
+            {
+              "node": "salesForceAgent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "authors": "Shawn Crowley",
-    "name": "v1",
+    "name": "v1.1",
     "description": "",
     "autosaved": true
   },
